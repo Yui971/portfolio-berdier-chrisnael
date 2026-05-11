@@ -1,4 +1,4 @@
-/* ==============================================================
+﻿/* ==============================================================
    PORTFOLIO CHRISNAEL BERDIER — JavaScript Principal V6
    ============================================================== */
 
@@ -39,18 +39,22 @@ const Navigation = (() => {
       lastScroll = current;
     }, { passive: true });
     if (burger && mobileMenu) {
+      function closeMenu() {
+        mobileMenu.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Ouvrir le menu');
+        document.body.style.overflow = '';
+      }
       burger.addEventListener('click', () => {
         const isOpen = mobileMenu.classList.toggle('is-open');
         burger.setAttribute('aria-expanded', isOpen);
         burger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
         document.body.style.overflow = isOpen ? 'hidden' : '';
       });
+      const closeBtn = document.getElementById('nav-mobile-close');
+      if (closeBtn) closeBtn.addEventListener('click', closeMenu);
       mobileMenu.querySelectorAll('.nav__mobile-link').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('is-open');
-          burger.setAttribute('aria-expanded', 'false');
-          document.body.style.overflow = '';
-        });
+        link.addEventListener('click', closeMenu);
       });
     }
   }
@@ -732,3 +736,4 @@ const LangSelector = (() => {
 })();
 
 LangSelector.init();
+
