@@ -1,5 +1,5 @@
 ﻿/* ==============================================================
-   PORTFOLIO CHRISNAEL BERDIER — JavaScript Principal V6
+   PORTFOLIO CHRISNAEL BERDIER - JavaScript Principal V6
    ============================================================== */
 
 /* === MODULE 1 : THEME === */
@@ -595,7 +595,7 @@ const LangSelector = (() => {
       'nav.home': 'Accueil', 'nav.about': 'À propos', 'nav.projects': 'Projets', 'nav.skills': 'Compétences', 'nav.contact': 'Contact',
       // HERO
       'hero.greeting': '👋 Salut, moi c\'est',
-      'hero.subtitle': 'Étudiant en BUT MMI — Je crée des identités visuelles percutantes, des interfaces soignées et des supports de communication qui marquent les esprits.',
+      'hero.subtitle': 'Étudiant en BUT MMI, je crée des identités visuelles percutantes, des interfaces soignées et des supports de communication qui marquent les esprits.',
       'hero.badge': 'Disponible pour un stage ou une alternance',
       // ABOUT (homepage)
       'about.label': 'À propos',
@@ -626,7 +626,7 @@ const LangSelector = (() => {
     en: {
       'nav.home': 'Home', 'nav.about': 'About', 'nav.projects': 'Projects', 'nav.skills': 'Skills', 'nav.contact': 'Contact',
       'hero.greeting': '👋 Hi, I\'m',
-      'hero.subtitle': 'Multimedia & Internet student — I create striking visual identities, refined interfaces and communication materials that leave a lasting impression.',
+      'hero.subtitle': 'Multimedia & Internet student, I create striking visual identities, refined interfaces and communication materials that leave a lasting impression.',
       'hero.badge': 'Available for internship or work-study',
       'about.label': 'About',
       'about.title': 'Design in service of\u00a0meaning',
@@ -651,7 +651,7 @@ const LangSelector = (() => {
     es: {
       'nav.home': 'Inicio', 'nav.about': 'Sobre mí', 'nav.projects': 'Proyectos', 'nav.skills': 'Habilidades', 'nav.contact': 'Contacto',
       'hero.greeting': '👋 Hola, soy',
-      'hero.subtitle': 'Estudiante de Multimedia e Internet — Creo identidades visuales impactantes, interfaces cuidadas y materiales de comunicación que dejan huella.',
+      'hero.subtitle': 'Estudiante de Multimedia e Internet, creo identidades visuales impactantes, interfaces cuidadas y materiales de comunicación que dejan huella.',
       'hero.badge': 'Disponible para prácticas o alternancia',
       'about.label': 'Sobre mí',
       'about.title': 'Diseño al servicio del\u00a0sentido',
