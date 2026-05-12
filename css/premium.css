@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════
    PREMIUM REDESIGN — Dark luxury · Glassmorphism · Orange
    Chrisnaël Berdier Portfolio
 ═══════════════════════════════════════════════════════════ */
@@ -672,4 +672,100 @@ body {
   .contact-form-row { grid-template-columns: 1fr; }
   .contact__form-card { padding: 28px 22px; }
   .contact-hero { padding-top: calc(70px + 3rem); padding-bottom: 3rem; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT MODE — overrides pour corriger les contrastes
+═══════════════════════════════════════════════════════════ */
+[data-theme="light"] .nav {
+  background: rgba(245, 242, 236, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(26, 26, 46, 0.08) !important;
+}
+[data-theme="light"] .nav__link,
+[data-theme="light"] .nav__logo {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .glass-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-strong) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: var(--shadow-md) !important;
+}
+[data-theme="light"] .stat.glass-card .stat__label {
+  color: var(--text-tertiary) !important;
+}
+[data-theme="light"] .hero__name-first {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .hero__role {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .hero__stat-label {
+  color: var(--text-tertiary) !important;
+}
+[data-theme="light"] .project-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+[data-theme="light"] .marquee-strip__item {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .contact-hero__title {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact-hero__subtitle {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .contact-info-card__label {
+  color: var(--text-tertiary) !important;
+}
+[data-theme="light"] .contact-info-card__value {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact-info-card__value a {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact-info-card__value--green {
+  color: #16a34a !important;
+}
+[data-theme="light"] .contact-social {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact-social__name {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact-social__handle {
+  color: var(--text-tertiary) !important;
+}
+[data-theme="light"] .contact__form-heading {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact__form-sub {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .contact__form-card .form-group label {
+  color: var(--text-secondary) !important;
+  text-transform: none !important;
+}
+[data-theme="light"] .contact__form-card .form-group input,
+[data-theme="light"] .contact__form-card .form-group textarea {
+  background: var(--bg-card) !important;
+  border: 1.5px solid var(--border-strong) !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .contact__form-card .form-group input::placeholder,
+[data-theme="light"] .contact__form-card .form-group textarea::placeholder {
+  color: var(--text-tertiary) !important;
+}
+[data-theme="light"] .contact__form-card .form-group input:focus,
+[data-theme="light"] .contact__form-card .form-group textarea:focus {
+  border-color: var(--accent) !important;
+  background: var(--bg-card) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft) !important;
 }

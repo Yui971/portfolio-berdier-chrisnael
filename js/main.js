@@ -6,7 +6,7 @@
 const ThemeManager = (() => {
   const html = document.documentElement;
   const STORAGE_KEY = 'portfolio-theme';
-  function getAutoTheme() { const h = new Date().getHours(); return (h >= 7 && h < 20) ? 'light' : 'dark'; }
+  function getAutoTheme() { return 'dark'; }
   function setTheme(theme) {
     html.setAttribute('data-theme', theme);
     const btn = document.querySelector('.theme-switch');
