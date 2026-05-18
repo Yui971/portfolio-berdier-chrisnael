@@ -1,5 +1,5 @@
 ﻿/* ═══════════════════════════════════════════════════════════
-   PREMIUM REDESIGN — Dark luxury · Glassmorphism · Orange
+   PREMIUM REDESIGN - Dark luxury · Glassmorphism · Orange
    Chrisnaël Berdier Portfolio
 ═══════════════════════════════════════════════════════════ */
 
@@ -88,7 +88,7 @@ body {
   margin-bottom: 28px !important;
 }
 
-/* Title — massive */
+/* Title - massive */
 .hero__title {
   font-size: clamp(72px, 12vw, 168px) !important;
   font-weight: 800 !important;
@@ -110,7 +110,7 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-/* Hide the old .highlight — replaced by .hero__role */
+/* Hide the old .highlight - replaced by .hero__role */
 .hero__title .highlight {
   display: none !important;
 }
@@ -286,7 +286,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION LABELS — orange pill
+   SECTION LABELS - orange pill
 ═══════════════════════════════════════════════════════════ */
 .section__label {
   color: rgba(255,112,67,0.85) !important;
@@ -302,7 +302,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PROJECT CARDS — glass
+   PROJECT CARDS - glass
 ═══════════════════════════════════════════════════════════ */
 .project-card {
   background: rgba(255,255,255,0.035) !important;
@@ -328,7 +328,7 @@ body {
 .tag--web { background: rgba(255,112,67,0.12) !important; color: #FF9A3C !important; border-color: rgba(255,112,67,0.22) !important; }
 
 /* ═══════════════════════════════════════════════════════════
-   SCROLL REVEALS — enhanced
+   SCROLL REVEALS - enhanced
 ═══════════════════════════════════════════════════════════ */
 .reveal {
   opacity: 0;
@@ -347,7 +347,7 @@ body {
 .stagger-5 { transition-delay: 0.38s !important; }
 
 /* ═══════════════════════════════════════════════════════════
-   MARQUEE — orange dots
+   MARQUEE - orange dots
 ═══════════════════════════════════════════════════════════ */
 .marquee-strip {
   border-top: 1px solid rgba(255,255,255,0.05) !important;
@@ -370,14 +370,14 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FIX 3 — Burger menu z-index au-dessus du widget a11y (300)
+   FIX 3 - Burger menu z-index au-dessus du widget a11y (300)
 ═══════════════════════════════════════════════════════════ */
 .nav__mobile {
   z-index: 350 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FIX 6a — About glow : sortir du overflow:hidden
+   FIX 6a - About glow : sortir du overflow:hidden
    Le glow a besoin que le parent soit visible.
    L'image garde ses coins arrondis via son propre border-radius.
 ═══════════════════════════════════════════════════════════ */
@@ -389,16 +389,16 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   RESPONSIVE — corrections mobile
+   RESPONSIVE - corrections mobile
 ═══════════════════════════════════════════════════════════ */
 @media (max-width: 599px) {
-  /* Fix 1 — Titre hero : clamp min de 72px débordait sur 375px */
+  /* Fix 1 - Titre hero : clamp min de 72px débordait sur 375px */
   .hero__title {
     font-size: clamp(44px, 12vw, 64px) !important;
     margin-bottom: 14px !important;
   }
 
-  /* Fix 2 — Hero trop haut : réduire les marges pour tenir dans 100vh */
+  /* Fix 2 - Hero trop haut : réduire les marges pour tenir dans 100vh */
   .hero__greeting {
     margin-bottom: 16px !important;
   }
@@ -411,20 +411,20 @@ body {
     padding-bottom: 80px !important;
   }
 
-  /* Fix 5 — Role strip : cohérence avec hero centré */
+  /* Fix 5 - Role strip : cohérence avec hero centré */
   .hero__role { justify-content: center !important; }
 
   .hero__stat-divider { display: none; }
   .about__img-badge { display: none; }
 }
 
-/* Fix 5 — Nav trop chargée sous 380px : masquer le sélecteur de langue */
+/* Fix 5 - Nav trop chargée sous 380px : masquer le sélecteur de langue */
 @media (max-width: 380px) {
   .lang-selector { display: none !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MOBILE MENU — Logo + bouton fermer
+   MOBILE MENU - Logo + bouton fermer
 ═══════════════════════════════════════════════════════════ */
 .nav__mobile-header {
   position: absolute;
@@ -463,7 +463,7 @@ body {
 .nav__mobile-close svg { width: 20px; height: 20px; }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE CONTACT — PREMIUM
+   PAGE CONTACT - PREMIUM
 ═══════════════════════════════════════════════════════════ */
 
 /* Hero header */
@@ -676,7 +676,7 @@ body {
 
 
 /* ═══════════════════════════════════════════════════════════
-   LIGHT MODE — overrides pour corriger les contrastes
+   LIGHT MODE - overrides pour corriger les contrastes
 ═══════════════════════════════════════════════════════════ */
 [data-theme="light"] .nav {
   background: rgba(245, 242, 236, 0.88) !important;
