@@ -44,17 +44,30 @@
               <input type="search" class="projects__search-input" id="project-search" placeholder="Rechercher un projet…" data-i18n-placeholder="projets.search" aria-label="Rechercher un projet">
             </div>
           </div>
-          <div class="projects__filters" role="toolbar" aria-label="Filtrer les projets">
+          <div class="filter-mode-wrap">
+            <span class="filter-mode-label" id="label-cat">Catégories</span>
+            <button class="filter-mode-toggle" id="filter-mode-toggle" role="switch" aria-checked="false" aria-label="Basculer vers le mode UE" type="button">
+              <span class="filter-mode-toggle__thumb"></span>
+            </button>
+            <span class="filter-mode-label" id="label-ue">UE</span>
+          </div>
+          <div class="projects__filters projects__filters--cat" id="filters-cat" role="toolbar" aria-label="Filtrer par catégorie">
             <button class="filter-btn is-active" data-filter="all" aria-pressed="true" data-i18n="filter.all">Tous</button>
             <button class="filter-btn" data-filter="graphique" aria-pressed="false" data-i18n="filter.graphic">Production graphique</button>
             <button class="filter-btn" data-filter="web" aria-pressed="false" data-i18n="filter.web">Développement web</button>
             <button class="filter-btn" data-filter="video" aria-pressed="false" data-i18n="filter.video">Audio &amp; Vidéo</button>
           </div>
+          <div class="projects__filters projects__filters--ue" id="filters-ue" role="toolbar" aria-label="Filtrer par UE">
+            <button class="filter-btn is-active" data-ue-filter="all" aria-pressed="true">Tous</button>
+            <button class="filter-btn" data-ue-filter="ue12" aria-pressed="false">UE 1.2 · Concevoir</button>
+            <button class="filter-btn" data-ue-filter="ue13" aria-pressed="false">UE 1.3 · Exprimer</button>
+            <button class="filter-btn" data-ue-filter="ue14" aria-pressed="false">UE 1.4 · Développer</button>
+          </div>
         </div>
         <div class="projects__grid" aria-live="polite">
 
           <!-- PRODUCTION GRAPHIQUE 1 -->
-          <article class="project-card reveal stagger-1" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-1.webp" data-project-title="Flyer Festival Terre de Blues" data-project-tags="Flyer,Canva,Production graphique" data-project-desc="Création d'un flyer promotionnel pour le Festival Terre de Blues, mettant en avant l'ambiance musicale et l'identité visuelle de l'événement avec une palette de couleurs orange et bleu dynamique. Travail sur la composition, la hiérarchie typographique et l'impact visuel. Réalisé sur Canva.">
+          <article class="project-card reveal stagger-1" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-1.webp" data-project-title="Flyer Festival Terre de Blues" data-project-tags="Flyer,Canva,Production graphique" data-project-desc="Création d'un flyer promotionnel pour le Festival Terre de Blues, mettant en avant l'ambiance musicale et l'identité visuelle de l'événement avec une palette de couleurs orange et bleu dynamique. Travail sur la composition, la hiérarchie typographique et l'impact visuel. Réalisé sur Canva.">
             <div class="project-card__image"><img src="assets/img/projet-1.webp" alt="Flyer pour le Festival Terre de Blues" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Canva</span></div>
@@ -65,7 +78,7 @@
           </article>
 
           <!-- PRODUCTION GRAPHIQUE 2 -->
-          <article class="project-card reveal stagger-2" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-2.webp" data-project-title="Affiche de Concert : Style Swissed" data-project-tags="Affiche,Canva,Production graphique" data-project-desc="Expérimentation créative de design pour un concert fictif de l'artiste Tame Impala. Travail sur la composition typographique dans un style swiss/international, avec une attention portée à la hiérarchie visuelle, la grille et le contraste. Réalisé sur Canva.">
+          <article class="project-card reveal stagger-2" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-2.webp" data-project-title="Affiche de Concert : Style Swissed" data-project-tags="Affiche,Canva,Production graphique" data-project-desc="Expérimentation créative de design pour un concert fictif de l'artiste Tame Impala. Travail sur la composition typographique dans un style swiss/international, avec une attention portée à la hiérarchie visuelle, la grille et le contraste. Réalisé sur Canva.">
             <div class="project-card__image"><img src="assets/img/projet-2.webp" alt="Affiche de concert fictive style Swissed" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Canva</span></div>
@@ -76,7 +89,7 @@
           </article>
 
           <!-- PRODUCTION GRAPHIQUE 3 -->
-          <article class="project-card reveal stagger-3" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-3.webp" data-project-title="Affiche de Film : Peaky Blinders, L'Immortel" data-project-tags="Affiche,Photoshop,Production graphique" data-project-desc="Création d'une affiche promotionnelle pour le film Peaky Blinders : L'Immortel. Design minimaliste en silhouette avec un fort contraste noir et crème, typographie cinématographique et composition épurée mettant en valeur l'identité visuelle de la franchise. Réalisé sur Adobe Photoshop.">
+          <article class="project-card reveal stagger-3" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-3.webp" data-project-title="Affiche de Film : Peaky Blinders, L'Immortel" data-project-tags="Affiche,Photoshop,Production graphique" data-project-desc="Création d'une affiche promotionnelle pour le film Peaky Blinders : L'Immortel. Design minimaliste en silhouette avec un fort contraste noir et crème, typographie cinématographique et composition épurée mettant en valeur l'identité visuelle de la franchise. Réalisé sur Adobe Photoshop.">
             <div class="project-card__image"><img src="assets/img/projet-3.webp" alt="Affiche du film Peaky Blinders L'Immortel" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Photoshop</span></div>
@@ -87,7 +100,7 @@
           </article>
 
           <!-- PRODUCTION GRAPHIQUE 4 -->
-          <article class="project-card reveal stagger-1" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-4.webp" data-project-title="Flyer / Post Instagram : Itae Sushi &amp; Ramen" data-project-tags="Flyer,Canva,Production graphique" data-project-desc="Création d'un flyer promotionnel pour le restaurant Itae Sushi et Ramen, déclinable en post Instagram. Le design met en avant l'identité japonaise du restaurant avec des illustrations de façades traditionnelles, le logo central et les informations pratiques. Réalisé sur Canva.">
+          <article class="project-card reveal stagger-1" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-4.webp" data-project-title="Flyer / Post Instagram : Itae Sushi &amp; Ramen" data-project-tags="Flyer,Canva,Production graphique" data-project-desc="Création d'un flyer promotionnel pour le restaurant Itae Sushi et Ramen, déclinable en post Instagram. Le design met en avant l'identité japonaise du restaurant avec des illustrations de façades traditionnelles, le logo central et les informations pratiques. Réalisé sur Canva.">
             <div class="project-card__image"><img src="assets/img/projet-4.webp" alt="Flyer pour Itae Sushi et Ramen" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Canva</span></div>
@@ -98,7 +111,7 @@
           </article>
 
           <!-- PRODUCTION GRAPHIQUE 5 -->
-          <article class="project-card reveal stagger-2" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-5.webp" data-project-title="Couverture Magazine ICONE" data-project-tags="Cover,Canva,Production graphique" data-project-desc="Prolongement de ma passion pour les couvertures de magazine avec un nouveau design et une nouvelle organisation visuelle. Travail sur la mise en page, le choix typographique et la composition photographique pour un rendu éditorial professionnel. Réalisé sur Canva.">
+          <article class="project-card reveal stagger-2" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-5.webp" data-project-title="Couverture Magazine ICONE" data-project-tags="Cover,Canva,Production graphique" data-project-desc="Prolongement de ma passion pour les couvertures de magazine avec un nouveau design et une nouvelle organisation visuelle. Travail sur la mise en page, le choix typographique et la composition photographique pour un rendu éditorial professionnel. Réalisé sur Canva.">
             <div class="project-card__image"><img src="assets/img/projet-5.webp" alt="Couverture du magazine fictif ICONE" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Canva</span></div>
@@ -109,7 +122,7 @@
           </article>
 
           <!-- PRODUCTION GRAPHIQUE 6 -->
-          <article class="project-card reveal stagger-3" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-6.webp" data-project-title="Composition Visuelle : DECATHLON" data-project-tags="Composition,Canva,Production graphique" data-project-desc="Exploration créative autour de la composition visuelle et du design pour l'enseigne DECATHLON. Travail sur l'assemblage d'éléments visuels, le contraste chromatique et l'harmonie graphique pour créer des visuels impactants. Réalisé sur Canva.">
+          <article class="project-card reveal stagger-3" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-6.webp" data-project-title="Composition Visuelle : DECATHLON" data-project-tags="Composition,Canva,Production graphique" data-project-desc="Exploration créative autour de la composition visuelle et du design pour l'enseigne DECATHLON. Travail sur l'assemblage d'éléments visuels, le contraste chromatique et l'harmonie graphique pour créer des visuels impactants. Réalisé sur Canva.">
             <div class="project-card__image"><img src="assets/img/projet-6.webp" alt="Composition visuelle DECATHLON" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Canva</span></div>
@@ -120,7 +133,7 @@
           </article>
 
           <!-- DÉVELOPPEMENT WEB : MARËIS -->
-          <article class="project-card reveal stagger-1" data-category="web" tabindex="0" data-project-img="" data-project-title="Site Web MARËIS : Protection Marine" data-project-tags="HTML/CSS,JavaScript,Développement web" data-project-desc="Projet SAE 1.05 : conception et développement d'un site web complet pour MARËIS, association fictive dédiée à la protection de la faune et flore marine en Guadeloupe. Site multi-pages responsive avec mode sombre, navigation fluide, sections dynamiques et formulaire de contact. Développé en HTML, CSS et JavaScript." data-project-url="https://sallyanicet-gif.github.io/sae-1.05/">
+          <article class="project-card reveal stagger-1" data-category="web" data-ue="ue14" tabindex="0" data-project-img="" data-project-title="Site Web MARËIS : Protection Marine" data-project-tags="HTML/CSS,JavaScript,Développement web" data-project-desc="Projet SAE 1.05 : conception et développement d'un site web complet pour MARËIS, association fictive dédiée à la protection de la faune et flore marine en Guadeloupe. Site multi-pages responsive avec mode sombre, navigation fluide, sections dynamiques et formulaire de contact. Développé en HTML, CSS et JavaScript." data-project-url="https://sallyanicet-gif.github.io/sae-1.05/">
             <div class="project-card__image project-card__image--icon"><div class="project-card__icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag tag--web">Développement web</span><span class="tag tag--secondary">HTML/CSS/JS</span></div>
@@ -129,7 +142,7 @@
               <button class="project-card__link" type="button">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
           </article>
-  <article class="project-card reveal stagger-2" data-category="web" tabindex="0" data-project-img="" data-project-title="Landing Page AirPods Pro 3" data-project-tags="HTML/CSS,JavaScript,GSAP,Design" data-project-desc="Landing page premium inspirée du design Apple pour les AirPods Pro 3. Site one-page avec animations GSAP/ScrollTrigger, sections plein-écran avec images en fond, bento grid pour les fonctionnalités, switch de langue FR/EN, loader animé, curseur personnalisé et design entièrement responsive." data-project-url="https://yui971.github.io/AirPods-Pro-3/">
+  <article class="project-card reveal stagger-2" data-category="web" data-ue="ue14" tabindex="0" data-project-img="" data-project-title="Landing Page AirPods Pro 3" data-project-tags="HTML/CSS,JavaScript,GSAP,Design" data-project-desc="Landing page premium inspirée du design Apple pour les AirPods Pro 3. Site one-page avec animations GSAP/ScrollTrigger, sections plein-écran avec images en fond, bento grid pour les fonctionnalités, switch de langue FR/EN, loader animé, curseur personnalisé et design entièrement responsive." data-project-url="https://yui971.github.io/AirPods-Pro-3/">
     <div class="project-card__image project-card__image--icon"><div class="project-card__icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg></div></div>
     <div class="project-card__body">
       <div class="project-card__tags"><span class="tag tag--web">Développement web</span><span class="tag tag--secondary">GSAP / Design</span></div>
@@ -138,7 +151,7 @@
       <button class="project-card__link" type="button">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
     </div>
   </article>
-  <article class="project-card reveal stagger-3" data-category="web" tabindex="0" data-project-img="" data-project-title="Caprice des Îles : Menu Digital" data-project-tags="HTML/CSS,JavaScript,PWA" data-project-desc="Menu digital bilingue FR/EN pour le restaurant Caprice des Îles en Guadeloupe. Application web progressive sans dépendances, gestion des plats via un fichier JSON, tags visuels (plat du jour, spécialité locale), support hors-ligne via Service Worker et interface responsive." data-project-url="https://yui971.github.io/caprice-des-iles/">
+  <article class="project-card reveal stagger-3" data-category="web" data-ue="ue14" tabindex="0" data-project-img="" data-project-title="Caprice des Îles : Menu Digital" data-project-tags="HTML/CSS,JavaScript,PWA" data-project-desc="Menu digital bilingue FR/EN pour le restaurant Caprice des Îles en Guadeloupe. Application web progressive sans dépendances, gestion des plats via un fichier JSON, tags visuels (plat du jour, spécialité locale), support hors-ligne via Service Worker et interface responsive." data-project-url="https://yui971.github.io/caprice-des-iles/">
     <div class="project-card__image project-card__image--icon"><div class="project-card__icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div></div>
     <div class="project-card__body">
       <div class="project-card__tags"><span class="tag tag--web">Développement web</span><span class="tag tag--secondary">PWA / JSON</span></div>
@@ -148,7 +161,7 @@
     </div>
   </article>
 
-  <article class="project-card reveal stagger-1" data-category="web" tabindex="0" data-project-img="" data-project-title="Prisme : Site Média" data-project-tags="HTML/CSS,JavaScript,Développement web" data-project-desc="Exercice R2.07 Écriture Multimédia BUT MMI 1. Site média journalistique consacré aux fractures numériques et sociales (Technologie &amp; Société). Deux articles longs formats, compteur de vues CounterAPI, newsletter Formspree, flux RSS, modales footer dynamiques, design system complet développé en HTML, CSS et JavaScript vanilla." data-project-url="https://yui971.github.io/prisme-media/">
+  <article class="project-card reveal stagger-1" data-category="web" data-ue="ue13" tabindex="0" data-project-img="" data-project-title="Prisme : Site Média" data-project-tags="HTML/CSS,JavaScript,Développement web" data-project-desc="Exercice R2.07 Écriture Multimédia BUT MMI 1. Site média journalistique consacré aux fractures numériques et sociales (Technologie &amp; Société). Deux articles longs formats, compteur de vues CounterAPI, newsletter Formspree, flux RSS, modales footer dynamiques, design system complet développé en HTML, CSS et JavaScript vanilla." data-project-url="https://yui971.github.io/prisme-media/">
     <div class="project-card__image project-card__image--icon"><div class="project-card__icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a4 4 0 0 1-4 4z"/><path d="M2 20a2 2 0 0 0 2 2v-4H2v2z"/><line x1="10" y1="8" x2="18" y2="8"/><line x1="10" y1="12" x2="18" y2="12"/><line x1="10" y1="16" x2="14" y2="16"/></svg></div></div>
     <div class="project-card__body">
       <div class="project-card__tags"><span class="tag tag--web">Développement web</span><span class="tag tag--secondary">HTML/CSS/JS</span></div>
@@ -158,7 +171,7 @@
     </div>
   </article>
           <!-- PRODUCTION GRAPHIQUE 7 : Affiche Expo James Gill -->
-          <article class="project-card reveal stagger-1" data-category="graphique" tabindex="0" data-project-img="assets/img/projet-7.webp" data-project-title="Affiche d'Exposition : James Gill, Pop Art Legacy" data-project-tags="Affiche,Photoshop,Production graphique" data-project-desc="Conception d'une affiche pour une exposition fictive de James Francis Gill au [mac] Musée d'Art Contemporain de Marseille. Le design repose sur un triptyque chromatique (violet, bleu et jaune-rouge) avec superposition de portraits de l'artiste et éléments graphiques constructivistes. Un travail de direction artistique alliant typographie bold, composition symétrique et traitement colorimétrique Pop Art. Réalisé sur Adobe Photoshop.">
+          <article class="project-card reveal stagger-1" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-7.webp" data-project-title="Affiche d'Exposition : James Gill, Pop Art Legacy" data-project-tags="Affiche,Photoshop,Production graphique" data-project-desc="Conception d'une affiche pour une exposition fictive de James Francis Gill au [mac] Musée d'Art Contemporain de Marseille. Le design repose sur un triptyque chromatique (violet, bleu et jaune-rouge) avec superposition de portraits de l'artiste et éléments graphiques constructivistes. Un travail de direction artistique alliant typographie bold, composition symétrique et traitement colorimétrique Pop Art. Réalisé sur Adobe Photoshop.">
             <div class="project-card__image"><img src="assets/img/projet-7.webp" alt="Affiche d'exposition fictive James Gill Pop Art Legacy au mac Marseille" loading="lazy"></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Photoshop</span></div>
@@ -169,7 +182,7 @@
           </article>
 
           <!-- PRODUCTION AUDIO & VIDÉO : YouTube 1 -->
-          <article class="project-card reveal stagger-2" data-category="video" tabindex="0" data-project-img="" data-project-title="Production Audiovisuelle : Projet Vidéo" data-project-tags="Montage,CapCut,Production audio &amp; vidéo" data-project-desc="Réalisation d'une production audiovisuelle dans le cadre de mes études en BUT MMI. Travail sur le cadrage, le montage, la narration visuelle et l'habillage sonore. Ce projet illustre mes compétences en captation et post-production vidéo." data-project-video="Y85a9M9mVBk">
+          <article class="project-card reveal stagger-2" data-category="video" data-ue="ue13" tabindex="0" data-project-img="" data-project-title="Production Audiovisuelle : Projet Vidéo" data-project-tags="Montage,CapCut,Production audio &amp; vidéo" data-project-desc="Réalisation d'une production audiovisuelle dans le cadre de mes études en BUT MMI. Travail sur le cadrage, le montage, la narration visuelle et l'habillage sonore. Ce projet illustre mes compétences en captation et post-production vidéo." data-project-video="Y85a9M9mVBk">
             <div class="project-card__image project-card__image--icon"><div class="project-card__icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag tag--video">Audio &amp; Vidéo</span><span class="tag tag--secondary">CapCut</span></div>
@@ -180,7 +193,7 @@
           </article>
 
           <!-- PRODUCTION AUDIO & VIDÉO : YouTube Short -->
-          <article class="project-card reveal stagger-3" data-category="video" tabindex="0" data-project-img="" data-project-title="Short Vidéo : Production Audiovisuelle" data-project-tags="Montage,CapCut,Production audio &amp; vidéo" data-project-desc="Création d'un short vidéo dans le cadre de mes études en BUT MMI. Format vertical optimisé pour les réseaux sociaux, avec un travail sur le rythme du montage, les transitions dynamiques et l'habillage graphique. Ce projet met en avant ma capacité à produire du contenu court et percutant adapté aux plateformes actuelles." data-project-video="x1Lvlvfe02M">
+          <article class="project-card reveal stagger-3" data-category="video" data-ue="ue13" tabindex="0" data-project-img="" data-project-title="Short Vidéo : Production Audiovisuelle" data-project-tags="Montage,CapCut,Production audio &amp; vidéo" data-project-desc="Création d'un short vidéo dans le cadre de mes études en BUT MMI. Format vertical optimisé pour les réseaux sociaux, avec un travail sur le rythme du montage, les transitions dynamiques et l'habillage graphique. Ce projet met en avant ma capacité à produire du contenu court et percutant adapté aux plateformes actuelles." data-project-video="x1Lvlvfe02M">
             <div class="project-card__image project-card__image--icon"><div class="project-card__icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
             <div class="project-card__body">
               <div class="project-card__tags"><span class="tag tag--video">Audio &amp; Vidéo</span><span class="tag tag--secondary">CapCut</span></div>

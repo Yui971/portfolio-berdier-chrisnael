@@ -152,38 +152,68 @@ const ScrollReveal = (() => {
 /* === MODULE 5 : FILTERS + SEARCH === */
 const ProjectFilters = (() => {
   function init() {
-    const buttons = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.project-card[data-category]');
+    const toolbar    = document.querySelector('.projects__toolbar');
+    const catBtns    = document.querySelectorAll('#filters-cat .filter-btn');
+    const ueBtns     = document.querySelectorAll('#filters-ue .filter-btn');
+    const cards      = document.querySelectorAll('.project-card');
     const searchInput = document.getElementById('project-search');
-    const emptyMsg = document.getElementById('projects-empty');
-    if (!buttons.length && !searchInput) return;
-    let currentFilter = 'all', currentSearch = '';
+    const emptyMsg   = document.getElementById('projects-empty');
+    const modeToggle = document.getElementById('filter-mode-toggle');
+    const labelCat   = document.getElementById('label-cat');
+    const labelUe    = document.getElementById('label-ue');
+    if (!cards.length) return;
+
+    let mode = 'cat', catFilter = 'all', ueFilter = 'all', search = '';
 
     function applyFilters() {
-      let visibleCount = 0;
+      let n = 0;
       cards.forEach(card => {
-        const matchFilter = currentFilter === 'all' || card.dataset.category === currentFilter;
+        const matchFilter = mode === 'cat'
+          ? (catFilter === 'all' || card.dataset.category === catFilter)
+          : (ueFilter  === 'all' || card.dataset.ue       === ueFilter);
         const title = (card.dataset.projectTitle || '').toLowerCase();
-        const desc = (card.dataset.projectDesc || '').toLowerCase();
-        const tags = (card.dataset.projectTags || '').toLowerCase();
-        const matchSearch = !currentSearch || title.includes(currentSearch) || desc.includes(currentSearch) || tags.includes(currentSearch);
+        const desc  = (card.dataset.projectDesc  || '').toLowerCase();
+        const tags  = (card.dataset.projectTags  || '').toLowerCase();
+        const matchSearch = !search || title.includes(search) || desc.includes(search) || tags.includes(search);
         if (matchFilter && matchSearch) {
           card.classList.remove('is-hidden');
           card.style.animation = 'fadeInUp 0.5s var(--ease-out) forwards';
-          visibleCount++;
+          n++;
         } else { card.classList.add('is-hidden'); }
       });
-      if (emptyMsg) emptyMsg.classList.toggle('is-visible', visibleCount === 0);
+      if (emptyMsg) emptyMsg.classList.toggle('is-visible', n === 0);
     }
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentFilter = btn.dataset.filter;
-        buttons.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
-        btn.classList.add('is-active'); btn.setAttribute('aria-pressed', 'true');
+
+    catBtns.forEach(btn => btn.addEventListener('click', () => {
+      catFilter = btn.dataset.filter;
+      catBtns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('is-active'); btn.setAttribute('aria-pressed', 'true');
+      applyFilters();
+    }));
+
+    ueBtns.forEach(btn => btn.addEventListener('click', () => {
+      ueFilter = btn.dataset.ueFilter;
+      ueBtns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('is-active'); btn.setAttribute('aria-pressed', 'true');
+      applyFilters();
+    }));
+
+    if (modeToggle) {
+      function switchMode() {
+        mode = mode === 'cat' ? 'ue' : 'cat';
+        const isUe = mode === 'ue';
+        modeToggle.setAttribute('aria-checked', isUe ? 'true' : 'false');
+        if (toolbar) toolbar.classList.toggle('projects__toolbar--ue', isUe);
+        if (labelCat) labelCat.classList.toggle('is-active', !isUe);
+        if (labelUe)  labelUe.classList.toggle('is-active', isUe);
         applyFilters();
-      });
-    });
-    if (searchInput) searchInput.addEventListener('input', (e) => { currentSearch = e.target.value.toLowerCase().trim(); applyFilters(); });
+      }
+      if (labelCat) labelCat.classList.add('is-active');
+      modeToggle.addEventListener('click', switchMode);
+      modeToggle.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); switchMode(); } });
+    }
+
+    if (searchInput) searchInput.addEventListener('input', e => { search = e.target.value.toLowerCase().trim(); applyFilters(); });
   }
   return { init };
 })();
