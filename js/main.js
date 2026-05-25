@@ -341,8 +341,8 @@ const ProjectModal = (() => {
         vw.className = 'project-modal__video-wrap';
         vw.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
         container.insertBefore(vw, controls);
-      } else if (siteUrl && !imgSrc) {
-        // Website iframe
+      } else if (siteUrl) {
+        // Website iframe (prioritaire sur la capture statique)
         img.style.display = 'none';
         controls.style.display = 'none';
         var sw = document.createElement('div');
@@ -351,7 +351,7 @@ const ProjectModal = (() => {
         container.insertBefore(sw, controls);
         if (extLink) { extLink.href = siteUrl; extLink.style.display = 'inline-flex'; }
       } else if (imgSrc) {
-        // Regular image
+        // Image statique (projets graphiques)
         img.src = imgSrc;
         img.alt = t;
         controls.style.display = '';
