@@ -26,7 +26,19 @@
         <div class="lang-selector" id="lang-selector"><button class="lang-btn" id="lang-btn" aria-label="Choisir la langue" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button><div class="lang-dropdown"><button class="lang-option is-active" data-lang="fr"><span class="lang-option__flag">🇫🇷</span> Français</button><button class="lang-option" data-lang="en"><span class="lang-option__flag">🇬🇧</span> English</button><button class="lang-option" data-lang="es"><span class="lang-option__flag">🇪🇸</span> Español</button></div></div><button class="theme-switch" aria-label="Basculer le mode sombre" type="button"><div class="theme-switch__track"><span aria-hidden="true">☀️</span><span aria-hidden="true">🌙</span></div><div class="theme-switch__thumb"></div></button><button class="nav__burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu" type="button"><span></span><span></span><span></span></button></div>
     </div>
     </nav>
-  <div class="nav__mobile" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu"><div class="nav__mobile-header"><a href="index.html" class="nav__mobile-logo" aria-label="Retour à l&apos;accueil">C<span>.</span></a><button class="nav__mobile-close" id="nav-mobile-close" aria-label="Fermer le menu" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><a href="index.html" class="nav__mobile-link">Accueil</a><a href="a-propos.html" class="nav__mobile-link">À propos</a><a href="projets.html" class="nav__mobile-link">Projets</a><a href="contact.html" class="nav__mobile-link">Contact</a></div>
+  <div class="nav__drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
+  <div class="nav__drawer" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="nav__drawer-header">
+      <a href="index.html" class="nav__drawer-logo" aria-label="Retour à l'accueil">C<span>.</span></a>
+      <button class="nav__drawer-close" id="nav-mobile-close" aria-label="Fermer le menu" type="button"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <nav class="nav__drawer-links">
+      <a href="index.html" class="nav__drawer-link">Accueil</a>
+      <a href="a-propos.html" class="nav__drawer-link">À propos</a>
+      <a href="projets.html" class="nav__drawer-link is-active">Projets</a>
+      <a href="contact.html" class="nav__drawer-link">Contact</a>
+    </nav>
+  </div>
   <main id="main">
     <header class="page-header">
       <div class="container">
@@ -65,17 +77,6 @@
           </div>
         </div>
         <div class="projects__grid" aria-live="polite">
-
-          <!-- PRODUCTION GRAPHIQUE 1 -->
-          <article class="project-card reveal stagger-1" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-1.webp" data-project-title="Flyer Festival Terre de Blues" data-project-tags="Flyer,Canva,Production graphique" data-project-desc="Création d'un flyer promotionnel pour le Festival Terre de Blues, mettant en avant l'ambiance musicale et l'identité visuelle de l'événement avec une palette de couleurs orange et bleu dynamique. Travail sur la composition, la hiérarchie typographique et l'impact visuel. Réalisé sur Canva.">
-            <div class="project-card__image"><img src="assets/img/projet-1.webp" alt="Flyer pour le Festival Terre de Blues" loading="lazy"></div>
-            <div class="project-card__body">
-              <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Canva</span></div>
-              <h3 class="project-card__title">Flyer Festival Terre de Blues</h3>
-              <p class="project-card__desc">Flyer promotionnel pour une ambiance musicale et une identité visuelle dynamique.</p>
-              <button class="project-card__link" type="button">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            </div>
-          </article>
 
           <!-- PRODUCTION GRAPHIQUE 2 -->
           <article class="project-card reveal stagger-2" data-category="graphique" data-ue="ue12" tabindex="0" data-project-img="assets/img/projet-2.webp" data-project-title="Affiche de Concert : Style Swissed" data-project-tags="Affiche,Canva,Production graphique" data-project-desc="Expérimentation créative de design pour un concert fictif de l'artiste Tame Impala. Travail sur la composition typographique dans un style swiss/international, avec une attention portée à la hiérarchie visuelle, la grille et le contraste. Réalisé sur Canva.">

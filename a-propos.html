@@ -26,7 +26,19 @@
         <div class="lang-selector" id="lang-selector"><button class="lang-btn" id="lang-btn" aria-label="Choisir la langue" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button><div class="lang-dropdown"><button class="lang-option is-active" data-lang="fr"><span class="lang-option__flag">🇫🇷</span> Français</button><button class="lang-option" data-lang="en"><span class="lang-option__flag">🇬🇧</span> English</button><button class="lang-option" data-lang="es"><span class="lang-option__flag">🇪🇸</span> Español</button></div></div><button class="theme-switch" aria-label="Basculer le mode sombre" type="button"><div class="theme-switch__track"><span aria-hidden="true">☀️</span><span aria-hidden="true">🌙</span></div><div class="theme-switch__thumb"></div></button><button class="nav__burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu" type="button"><span></span><span></span><span></span></button></div>
     </div>
     </nav>
-  <div class="nav__mobile" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu"><div class="nav__mobile-header"><a href="index.html" class="nav__mobile-logo" aria-label="Retour à l&apos;accueil">C<span>.</span></a><button class="nav__mobile-close" id="nav-mobile-close" aria-label="Fermer le menu" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><a href="index.html" class="nav__mobile-link">Accueil</a><a href="a-propos.html" class="nav__mobile-link">À propos</a><a href="projets.html" class="nav__mobile-link">Projets</a><a href="contact.html" class="nav__mobile-link">Contact</a></div>
+  <div class="nav__drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
+  <div class="nav__drawer" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="nav__drawer-header">
+      <a href="index.html" class="nav__drawer-logo" aria-label="Retour à l'accueil">C<span>.</span></a>
+      <button class="nav__drawer-close" id="nav-mobile-close" aria-label="Fermer le menu" type="button"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <nav class="nav__drawer-links">
+      <a href="index.html" class="nav__drawer-link">Accueil</a>
+      <a href="a-propos.html" class="nav__drawer-link is-active">À propos</a>
+      <a href="projets.html" class="nav__drawer-link">Projets</a>
+      <a href="contact.html" class="nav__drawer-link">Contact</a>
+    </nav>
+  </div>
   <main id="main">
     <header class="page-header">
       <div class="container">

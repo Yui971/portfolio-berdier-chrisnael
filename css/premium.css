@@ -698,6 +698,9 @@ body {
 [data-theme="light"] .stat.glass-card .stat__label {
   color: var(--text-tertiary) !important;
 }
+[data-theme="light"] .about__img-badge {
+  color: var(--text-primary) !important;
+}
 [data-theme="light"] .hero__name-first {
   color: var(--text-primary) !important;
 }

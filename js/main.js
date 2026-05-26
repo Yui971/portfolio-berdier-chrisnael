@@ -28,7 +28,8 @@ const ThemeManager = (() => {
 const Navigation = (() => {
   const nav = document.querySelector('.nav');
   const burger = document.querySelector('.nav__burger');
-  const mobileMenu = document.querySelector('.nav__mobile');
+  const drawer = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('drawer-backdrop');
   let lastScroll = 0;
   function init() {
     if (!nav) return;
@@ -38,23 +39,29 @@ const Navigation = (() => {
       else nav.classList.remove('is-hidden');
       lastScroll = current;
     }, { passive: true });
-    if (burger && mobileMenu) {
+    if (burger && drawer) {
       function closeMenu() {
-        mobileMenu.classList.remove('is-open');
+        drawer.classList.remove('is-open');
+        if (backdrop) backdrop.classList.remove('is-open');
         burger.setAttribute('aria-expanded', 'false');
         burger.setAttribute('aria-label', 'Ouvrir le menu');
         document.body.style.overflow = '';
       }
       burger.addEventListener('click', () => {
-        const isOpen = mobileMenu.classList.toggle('is-open');
-        burger.setAttribute('aria-expanded', isOpen);
+        const isOpen = drawer.classList.toggle('is-open');
+        if (backdrop) backdrop.classList.toggle('is-open', isOpen);
+        burger.setAttribute('aria-expanded', String(isOpen));
         burger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
         document.body.style.overflow = isOpen ? 'hidden' : '';
       });
       const closeBtn = document.getElementById('nav-mobile-close');
       if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-      mobileMenu.querySelectorAll('.nav__mobile-link').forEach(link => {
+      if (backdrop) backdrop.addEventListener('click', closeMenu);
+      drawer.querySelectorAll('.nav__drawer-link').forEach(link => {
         link.addEventListener('click', closeMenu);
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeMenu();
       });
     }
   }
