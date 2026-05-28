@@ -662,14 +662,23 @@ const ProjectModal = (() => {
         vw.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
         container.insertBefore(vw, controls);
       } else if (siteUrl) {
-        // Website iframe (prioritaire sur la capture statique)
-        img.style.display = 'none';
-        controls.style.display = 'none';
-        var sw = document.createElement('div');
-        sw.className = 'project-modal__site-wrap';
-        sw.innerHTML = '<iframe src="' + siteUrl + '" loading="lazy"></iframe>';
-        container.insertBefore(sw, controls);
-        if (extLink) { extLink.href = siteUrl; extLink.style.display = 'inline-flex'; }
+        if (card.dataset.noIframe) {
+          // Site bloque les iframes : afficher la capture statique + lien externe
+          img.src = imgSrc;
+          img.alt = t;
+          img.style.display = '';
+          controls.style.display = '';
+          if (extLink) { extLink.href = siteUrl; extLink.style.display = 'inline-flex'; }
+        } else {
+          // Website iframe (prioritaire sur la capture statique)
+          img.style.display = 'none';
+          controls.style.display = 'none';
+          var sw = document.createElement('div');
+          sw.className = 'project-modal__site-wrap';
+          sw.innerHTML = '<iframe src="' + siteUrl + '" loading="lazy"></iframe>';
+          container.insertBefore(sw, controls);
+          if (extLink) { extLink.href = siteUrl; extLink.style.display = 'inline-flex'; }
+        }
       } else if (imgSrc) {
         // Image statique (projets graphiques)
         img.src = imgSrc;
