@@ -54,6 +54,17 @@
 
   <main id="main">
 
+    <!--
+      HERO CONTACT — Zone d'accroche de la page contact
+      ────────────────────────────────────────────────────
+      Rôle : Bannière minimaliste avec deux orbes de fond,
+      un label, un H1 et un sous-titre.
+      Même technique d'orbes que la section hero de index.html
+      (radial-gradient + will-change: transform + animation lente).
+      Le texte utilise .reveal + .stagger-2/.stagger-3 pour entrer
+      en cascade (décalage de 0.2s × stagger).
+      Effet domino : Supprimer les orbes → fond uni sans atmosphère.
+    -->
     <!-- ═══ HERO CONTACT ═══ -->
     <div class="contact-hero">
       <div class="contact-hero__orb contact-hero__orb--1" aria-hidden="true"></div>
@@ -70,6 +81,21 @@
       <div class="container">
         <div class="contact__grid">
 
+          <!--
+            COLONNE INFORMATIONS DE CONTACT
+            ─────────────────────────────────
+            Rôle : Grille de quatre cartes glass (email, téléphone,
+            localisation, statut) + carte LinkedIn.
+            Chaque .contact-info-card est une .glass-card (premium.css).
+            .contact-pulse : animation CSS "pulse" sur un point vert
+            indiquant la disponibilité (même principe que .badge-dispo__dot).
+            Les liens <a href="mailto:..."> et <a href="tel:..."> sont
+            des URI schemes standards : le navigateur ouvre le client mail
+            ou l'application téléphone selon le système.
+            target="_blank" + rel="noopener noreferrer" sur LinkedIn :
+            sécurité contre le "tabnabbing" (la nouvelle page ne peut pas
+            accéder à window.opener de la page d'origine).
+          -->
           <!-- ── COLONNE INFO ── -->
           <div class="contact__info">
 
@@ -133,6 +159,50 @@
 
           </div>
 
+          <!--
+            FORMULAIRE DE CONTACT — FormSubmit + anti-spam honeypot
+            ──────────────────────────────────────────────────────────
+            Rôle : Formulaire HTML envoyant les données à FormSubmit.co
+            (service tiers gratuit) via une requête POST classique.
+            Pas de backend nécessaire : FormSubmit reçoit les données
+            et les transfère par email à l'adresse définie dans l'action.
+
+            CHAMPS CACHÉS FormSubmit :
+            - _subject : objet de l'email reçu.
+            - _captcha: false : désactive le captcha FormSubmit (déjà
+              protégé par le honeypot).
+            - _next : URL de redirection après envoi réussi.
+              Le module ContactForm (JS) intercepte la soumission en AJAX
+              et utilise history.replaceState() pour éviter la redirection
+              réelle tout en permettant au JS de détecter ?sent=true.
+            - _template: table : format de l'email reçu (tableau HTML).
+
+            HONEYPOT ANTI-SPAM :
+            <input name="_honey" style="display:none" tabindex="-1">
+            Les robots remplissent automatiquement tous les champs visibles.
+            Ce champ est visuellement caché mais présent dans le DOM.
+            Un bot qui le remplit → FormSubmit rejette la soumission.
+            tabindex="-1" : non accessible au clavier (l'utilisateur humain
+            ne peut pas l'atteindre même avec Tab).
+            autocomplete="off" : évite que le navigateur le pré-remplisse.
+
+            ACCESSIBILITÉ DU FORMULAIRE :
+            - <label for="..."> : chaque input est associé à son label
+              (WCAG 1.3.1 niveau A). Le lecteur d'écran annonce le label
+              quand le champ reçoit le focus.
+            - required + aria-required="true" : double déclaration.
+              required gère la validation HTML native, aria-required
+              informe les lecteurs d'écran avant la soumission.
+            - role="alert" sur #form-status : quand le JS injecte un message
+              de succès ou d'erreur, il est annoncé immédiatement par les
+              lecteurs d'écran (comportement aria-live="assertive" implicite
+              de role="alert").
+
+            Effet domino : Supprimer le honeypot → spam direct par les bots.
+            Supprimer les labels → les champs deviennent non accessibles.
+            Supprimer _next → FormSubmit redirige vers sa propre page de
+            confirmation, rompant l'expérience utilisateur.
+          -->
           <!-- ── FORMULAIRE ── -->
           <div class="contact__form-card glass-card reveal stagger-2">
             <h2 class="contact__form-heading">Envoyez un message</h2>

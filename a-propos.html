@@ -41,6 +41,29 @@
     </nav>
   </div>
   <main id="main">
+    <!--
+      PAGE À PROPOS — Présentation détaillée
+      ───────────────────────────────────────
+      Rôle : Page biographique complète avec portrait, quatre paragraphes
+      de présentation, compteurs CountUp, boutons d'action (CV + contact),
+      et cartes de valeurs.
+
+      loading="eager" sur le portrait : contrairement aux pages projets où
+      les images sont "lazy", ici l'image est dans le viewport immédiat
+      → eager évite le délai de chargement différé (meilleur LCP).
+
+      data-count sur les .stat__number : le module CountUp anime de 0
+      vers la valeur cible quand l'élément entre dans le viewport
+      (IntersectionObserver). data-suffix permet d'ajouter un suffixe
+      comme "+" après le chiffre (voir index.html pour la mécanique).
+
+      .about__cta-row : rangée de trois actions.
+      Le bouton "Visualiser le CV" (id="open-cv-viewer") déclenche l'ouverture
+      du #cv-modal via le JS. aria-haspopup="dialog" signale qu'un dialogue
+      va s'ouvrir.
+      Le lien "Télécharger" a l'attribut download="..." → force le navigateur
+      à télécharger le fichier plutôt que l'ouvrir dans un onglet.
+    -->
     <header class="page-header">
       <div class="container">
         <p class="section__label">Qui suis-je</p>
@@ -72,6 +95,19 @@
             </div>
           </div>
         </div>
+        <!--
+          CARTES DE VALEURS — Blocs Précision / Accessibilité / Créativité
+          ───────────────────────────────────────────────────────────────────
+          Rôle : Présentation des valeurs fondamentales en trois cards.
+          .reveal .stagger-1/2/3 : chaque card entre en vue avec un délai
+          décalé de 0.2s pour créer un effet "cascade" (stagger en animation).
+          Le stagger est calculé en CSS : nth-child(n) { transition-delay: n*0.2s }.
+          aria-hidden="true" sur l'icône emoji : les emojis peuvent être
+          mal lus par certains lecteurs d'écran (ex: "emoji cible rouge"
+          au lieu de rien). On les exclut.
+          Effet domino : Supprimer .stagger → toutes les cards apparaissent
+          simultanément. Supprimer .reveal → pas d'animation d'entrée.
+        -->
         <div class="about-page-values">
           <div class="value-card reveal stagger-1">
             <div class="value-card__icon" aria-hidden="true">🎯</div>
@@ -93,6 +129,21 @@
     </section>
   </main>
 
+  <!--
+    MODALE VISIONNEUSE CV
+    ──────────────────────
+    Rôle : Affiche le PDF du CV directement dans la page via une <iframe>
+    plutôt que d'ouvrir un onglet. Permet de prévisualiser sans quitter le site.
+    La même mécanique de modale que ProjectModal est réutilisée ici
+    (role="dialog" + aria-modal + aria-labelledby) pour la cohérence.
+    L'iframe src est vide par défaut et remplie par le JS à l'ouverture
+    (évite un chargement inutile du PDF au chargement de la page).
+    title="CV..." sur l'iframe : obligatoire pour l'accessibilité —
+    les lecteurs d'écran annoncent le titre de l'iframe embarquée.
+    Le lien "📥 Télécharger le PDF" est un fallback si l'iframe ne charge pas.
+    Effet domino : Charger l'iframe src dès le HTML → le PDF se télécharge
+    inutilement au chargement de la page, même si l'utilisateur n'ouvre pas la modale.
+  -->
   <!-- CV VIEWER MODAL -->
   <div class="project-modal-overlay" id="cv-modal" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title">
     <div class="project-modal">
