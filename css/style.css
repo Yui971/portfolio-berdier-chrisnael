@@ -3,6 +3,28 @@
    Architecture : Design tokens → Reset → Components → Layout → Pages
    ============================================================== */
 
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Système de variables CSS
+   ─────────────────────────────────────────
+   RÔLE : Centralise toutes les valeurs réutilisables du design
+   (espacements, typographie, couleurs, ombres, durées).
+
+   Définies sur :root = disponibles partout dans le CSS comme
+   variables CSS custom (var(--nom)).
+
+   EFFET DOMINO :
+   → Changer --accent: #E8552E en #0066FF = TOUTES les couleurs
+     d'accentuation (boutons, liens, barres, tags...) deviennent
+     bleues en une seule modification.
+   → Changer --text-hero: clamp(3rem, 2rem + 4.5vw, 7rem) =
+     la taille du titre hero change sur tous les écrans.
+     clamp(min, préféré, max) = min sur petits écrans, max sur grands.
+   → Changer --z-modal: 200 en 50 = les modales passeraient
+     DERRIÈRE la navigation (z-index: 100). Toujours garder
+     z-modal > z-nav.
+   → --ease-spring (cubic-bezier avec valeur > 1) produit un effet
+     de rebond (overshoot). Remplacer par ease-out = pas de rebond.
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== DESIGN TOKENS ======== */
 :root {
   --space-xs: 0.25rem; --space-sm: 0.5rem; --space-md: 1rem;
@@ -31,6 +53,30 @@
   --a11y-zoom: 1;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   THÈME CLAIR & SOMBRE — Système de theming par data-attribute
+   ──────────────────────────────────────────────────────────────
+   RÔLE : Redéfinit les tokens de couleur selon le thème actif.
+
+   MÉCANISME :
+   L'attribut data-theme="dark" ou "light" est placé sur <html>
+   par ThemeManager (JS). Le sélecteur [data-theme="dark"] { }
+   redéfinit les mêmes variables CSS avec des valeurs adaptées.
+   Tous les composants utilisent var(--bg-primary) etc., donc
+   ils basculent automatiquement sans toucher à leur propre CSS.
+
+   C'est le pattern "CSS custom properties pour le theming" :
+   une seule source de vérité pour les couleurs, modifiable
+   dynamiquement en JS via setAttribute().
+
+   EFFET DOMINO :
+   → Changer --accent en mode sombre = la couleur d'accentuation
+     sera différente selon le thème (ex: orange sombre, rouge clair).
+   → Changer --bg-primary en mode clair = le fond de toutes les
+     pages en mode clair changera.
+   → Ajouter un nouveau thème = créer un sélecteur
+     [data-theme="sepia"] { } avec ses propres valeurs.
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== MODE CLAIR ======== */
 [data-theme="light"], :root {
   --bg-primary: #F5F2EC; --bg-secondary: #EDEAE3; --bg-tertiary: #E2DFD8;
@@ -67,6 +113,35 @@
   --shadow-glow: 0 0 40px rgba(255, 112, 67, 0.2);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   RESET & BASE — Normalisation et styles fondamentaux
+   ────────────────────────────────────────────────────
+   RÔLE : Supprime les marges/paddings par défaut des navigateurs
+   et établit les règles de base pour tout le document.
+
+   box-sizing: border-box = le padding et la border sont inclus
+   dans la largeur totale. Exemple : un div de width:200px avec
+   padding:20px fait toujours 200px de large, pas 240px.
+
+   scroll-padding-top: 80px = quand on navigue vers une ancre
+   (#section), le scroll s'arrête 80px avant le haut de l'élément
+   (compense la hauteur de la nav fixe de 70px + marge).
+
+   font-size: calc(100% * var(--a11y-zoom)) = permet au widget
+   accessibilité de modifier la taille globale des textes en
+   changeant --a11y-zoom (JS injecte la valeur).
+
+   -webkit-font-smoothing: antialiased = lissage des polices sur
+   macOS/iOS pour un rendu plus propre.
+
+   EFFET DOMINO :
+   → Supprimer box-sizing: border-box = les paddings s'ajouteraient
+     à la largeur déclarée → nombreux bugs de mise en page.
+   → Changer scroll-padding-top: 80px en 0px = les ancres #section
+     passeraient sous la barre de navigation.
+   → Changer line-height: 1.7 en 1.2 = le texte sera plus compact,
+     moins aéré (lisibilité réduite).
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== RESET & BASE ======== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; font-size: calc(100% * var(--a11y-zoom)); }
@@ -76,6 +151,26 @@ body {
   transition: background-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
+/* ═══════════════════════════════════════════════════════════════
+   SKIP LINK — Lien d'évitement (accessibilité WCAG 2.4.1)
+   ─────────────────────────────────────────────────────────
+   RÔLE : Permet aux utilisateurs clavier/lecteur d'écran de
+   sauter directement au contenu principal sans Tab sur tous
+   les éléments de navigation.
+
+   LOGIQUE :
+   Le lien est positionné hors écran (top: -100%) par défaut.
+   Quand il reçoit le focus (Tab depuis le début de la page),
+   il apparaît visuellement (top: var(--space-md)).
+   C'est un critère WCAG 2.4.1 niveau A (obligatoire).
+
+   EFFET DOMINO :
+   → Supprimer ce composant = violation WCAG 2.4.1, les
+     utilisateurs clavier doivent Tab sur tous les liens nav
+     avant d'atteindre le contenu.
+   → Changer z-index: 9999 en 100 = le lien pourrait passer
+     derrière d'autres éléments fixed (nav, modales).
+   ═══════════════════════════════════════════════════════════════ */
 .skip-link {
   position: absolute; top: -100%; left: var(--space-md);
   background: var(--accent); color: #fff; padding: var(--space-sm) var(--space-lg);
@@ -99,11 +194,70 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 }
 .section__title { font-size: var(--text-2xl); margin-bottom: var(--space-2xl); }
 
+/* ═══════════════════════════════════════════════════════════════
+   SCROLL REVEAL — Animations d'apparition au défilement
+   ───────────────────────────────────────────────────────
+   RÔLE : Masque les éléments initialement et les anime quand
+   ils entrent dans le viewport (déclenché par JS via IntersectionObserver).
+
+   LOGIQUE :
+   .reveal = état initial : invisible (opacity:0) et décalé vers le bas.
+   .reveal.is-visible = état final : visible et à sa position normale.
+   La classe .is-visible est ajoutée par le module ScrollReveal (JS).
+
+   Les classes .stagger-* ajoutent un délai progressif :
+   stagger-2 = 0.15s, stagger-3 = 0.3s, stagger-4 = 0.45s.
+   Utilisées sur des éléments groupés pour créer un effet cascade.
+
+   EFFET DOMINO :
+   → Changer translateY(30px) en translateY(0) + scale(0.95) =
+     les éléments grossissent au lieu de monter.
+   → Changer transition-delay de stagger-2 de 0.15s en 0.5s =
+     le deuxième élément d'un groupe apparaît 0.5s après le premier
+     (effet cascade plus marqué).
+   → Supprimer opacity: 0 initial = les éléments sont visibles
+     dès le chargement mais l'animation translateY joue quand même.
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== SCROLL REVEAL ======== */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 .stagger-2 { transition-delay: 0.15s; } .stagger-3 { transition-delay: 0.3s; } .stagger-4 { transition-delay: 0.45s; }
 
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION — Barre fixe avec glassmorphisme et drawer mobile
+   ─────────────────────────────────────────────────────────────
+   RÔLE : Barre de navigation fixe en haut, avec effet de verre
+   (glassmorphisme), auto-hide au scroll (géré par JS), et
+   un drawer latéral pour mobile.
+
+   GLASSMORPHISME :
+   backdrop-filter: blur(12px) = flou sur le contenu derrière la nav.
+   Nécessite background semi-transparent pour que l'effet soit visible.
+   -webkit-backdrop-filter = préfixe pour Safari (obligatoire).
+
+   AUTO-HIDE :
+   .nav.is-hidden = transform: translateY(-100%) qui fait monter
+   la nav hors écran. La transition (400ms) la rend fluide.
+
+   DRAWER MOBILE :
+   Position fixed + z-index: 160 (au-dessus du backdrop z:150).
+   transform: translateX(110%) = caché à droite. .is-open retire
+   cette transformation. min(280px, 82vw) = s'adapte aux petits écrans.
+
+   IMPORTANT (règle de positionnement CSS) :
+   Le backdrop et le drawer sont FRÈRES du <nav> dans le DOM, pas
+   enfants. Si on les mettait DANS le nav, backdrop-filter sur .nav
+   créerait un nouveau contexte de positionnement et position:fixed
+   serait relatif au nav (bug d'affichage).
+
+   EFFET DOMINO :
+   → Changer z-index: 160 du drawer en 90 = le drawer passerait
+     DERRIÈRE la nav (z:100) → invisible.
+   → Changer transform: translateX(110%) en translateX(-110%) =
+     le drawer apparaîtrait depuis la gauche.
+   → Changer width: min(280px, 82vw) en 100vw = le drawer
+     prendra toute la largeur de l'écran (plein écran).
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== NAVIGATION ======== */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-nav);
@@ -206,6 +360,39 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 .nav__drawer-link:hover,
 .nav__drawer-link.is-active { color: var(--accent); }
 
+/* ═══════════════════════════════════════════════════════════════
+   HERO — Section d'accueil plein écran
+   ─────────────────────────────────────
+   RÔLE : Section d'accroche qui occupe 100vh (toute la hauteur
+   de la fenêtre), centrée, avec animations d'entrée en cascade.
+
+   min-height: 100vh plutôt que height: 100vh = si le contenu
+   est plus grand que la fenêtre (petit écran), la section
+   grandit au lieu de rogner le contenu.
+
+   padding-top: 70px = compense la nav fixe (hauteur 70px définie
+   dans .nav__inner) pour que le contenu du hero ne soit pas
+   caché derrière la nav.
+
+   ANIMATIONS D'ENTRÉE :
+   Chaque élément du hero (greeting, title, subtitle, cta) a une
+   animation fadeInUp avec un délai croissant (0.2s, 0.4s, 0.6s,
+   0.8s). Cela crée l'effet de cascade à l'arrivée sur la page.
+   Ils partent avec opacity:0 et se terminent à opacity:1 via
+   `forwards` (l'animation conserve son état final).
+
+   .hero__title .highlight = gradient de texte CSS :
+   background-clip: text + -webkit-text-fill-color: transparent
+   rend le dégradé visible uniquement sur le texte.
+
+   EFFET DOMINO :
+   → Changer min-height: 100vh en 70vh = le hero prendra 70% de
+     la hauteur de la fenêtre.
+   → Changer le délai de .hero__cta de .8s en 2s = le bouton CTA
+     n'apparaît que 2 secondes après le chargement.
+   → Modifier le gradient du .highlight = la ligne "Designer
+     Graphique" change de couleur.
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== HERO ======== */
 .hero {
   position: relative; min-height: 100vh; display: flex; align-items: center;
@@ -244,6 +431,26 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 }
 .hero__scroll-line { width: 1px; height: 40px; background: var(--accent); animation: scrollPulse 2s ease-in-out infinite; }
 
+/* ═══════════════════════════════════════════════════════════════
+   CANVAS PARTICULES — Fond animé pleine page
+   ───────────────────────────────────────────
+   RÔLE : Le <canvas> qui sert de support aux particules couvre
+   toute la fenêtre en position fixed.
+
+   position: fixed = le canvas reste immobile pendant le scroll,
+   il ne fait pas partie du flux du document.
+   z-index: var(--z-particles) = 1, donc sous le contenu (z:10)
+   mais visible.
+   pointer-events: none = CRUCIAL. Sans ça, le canvas intercepterait
+   tous les clics et l'utilisateur ne pourrait plus interagir avec
+   les boutons et liens de la page.
+
+   EFFET DOMINO :
+   → Retirer pointer-events: none = plus aucun clic ne passe à
+     travers le canvas vers les éléments en dessous.
+   → Changer z-index en 50 = les particules passeraient devant
+     certains éléments (mais derrière les modales z:200).
+   ═══════════════════════════════════════════════════════════════ */
 /* Full-page particles */
 .page-particles {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -254,6 +461,31 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scrollPulse { 0%, 100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(.5); opacity: .3; } }
 
+/* ═══════════════════════════════════════════════════════════════
+   BOUTONS — Système de boutons réutilisables
+   ───────────────────────────────────────────
+   RÔLE : Définit les styles de base et les variantes des boutons.
+
+   .btn = classe de base commune à tous les boutons.
+   .btn--primary = bouton principal (fond --accent).
+   .btn--outline = bouton secondaire (contour seulement).
+   .btn--glass = variante glassmorphisme (définie dans premium.css).
+
+   transform: translateY(-2px) au hover = légère élévation qui
+   donne une sensation de survol physique.
+   --ease-spring (rebond) = l'animation de hover a un petit
+   effet de "pression" sur le bouton.
+
+   border-radius: var(--radius-full) = 9999px = bouton en pilule.
+
+   EFFET DOMINO :
+   → Changer --radius-full en --radius-md (12px) = tous les
+     boutons deviennent rectangulaires arrondis au lieu de pilules.
+   → Changer transform: translateY(-2px) en scale(1.05) =
+     les boutons grossissent légèrement au hover au lieu de monter.
+   → Modifier box-shadow de .btn--primary = l'ombre portée du
+     bouton principal change (plus ou moins marquée).
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== BUTTONS ======== */
 .btn {
   display: inline-flex; align-items: center; gap: var(--space-sm);
@@ -415,6 +647,36 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 @media (min-width: 600px) { .projects__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .projects__grid { grid-template-columns: repeat(3, 1fr); } }
 
+/* ═══════════════════════════════════════════════════════════════
+   MODAL PROJETS — Fenêtre de détail projet
+   ──────────────────────────────────────────
+   RÔLE : Overlay + panneau modal pour afficher le détail d'un
+   projet (image, vidéo ou site en iframe).
+
+   LOGIQUE CSS :
+   L'overlay est en opacity:0 + pointer-events:none par défaut.
+   .is-open l'affiche. Le panneau (.project-modal) a une animation
+   translateY(30px) + scale(0.97) → translateY(0) + scale(1)
+   pour l'effet d'apparition.
+
+   backdrop-filter: blur(10px) sur l'overlay = le fond est flouté
+   derrière la modale, ce qui aide à la focalisation.
+
+   .project-modal__header est en position:sticky top:0 = le bouton
+   Fermer reste visible même quand on scrolle dans la modale.
+
+   ACCESSIBILITÉ :
+   role="dialog" aria-modal="true" = annonce la modale aux
+   lecteurs d'écran. closeBtn.focus() dans le JS = le focus
+   est envoyé sur le × à l'ouverture (WCAG 2.4.3).
+
+   EFFET DOMINO :
+   → Changer max-width: 850px en 100% = la modale prend toute
+     la largeur de l'écran.
+   → Changer max-height: 90vh en 60vh = la modale sera plus petite
+     verticallement, plus de scroll interne pour les gros contenus.
+   → Supprimer backdrop-filter = plus d'effet de flou sur le fond.
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== PROJECT DETAIL MODAL ======== */
 .project-modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
@@ -662,6 +924,32 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 .modal h3 { font-size: var(--text-lg); margin-top: var(--space-xl); margin-bottom: var(--space-sm); }
 .modal p { color: var(--text-secondary); margin-bottom: var(--space-md); font-size: var(--text-sm); }
 
+/* ═══════════════════════════════════════════════════════════════
+   SURCHARGES ACCESSIBILITÉ — Classes appliquées par le widget JS
+   ──────────────────────────────────────────────────────────────
+   RÔLE : Définit les états visuels activés par le widget a11y.
+   Ces classes sont ajoutées/retirées sur <body> par A11yWidget (JS).
+
+   .high-contrast = redéfinit les tokens de couleur avec des
+   valeurs à contraste maximal (noir/blanc pur). Le !important
+   est nécessaire pour surcharger les tokens déjà appliqués par
+   [data-theme="dark"/"light"].
+
+   .reduce-motion = coupe toutes les animations et transitions
+   pour les utilisateurs sensibles aux mouvements. Complète la
+   media query @media (prefers-reduced-motion) qui détecte le
+   réglage OS automatiquement.
+
+   .wide-spacing = augmente letter-spacing et line-height pour
+   améliorer la lisibilité (utile en cas de dyslexie).
+
+   EFFET DOMINO :
+   → Changer #000/#fff en des valeurs intermédiaires = le mode
+     contraste élevé sera moins extrême.
+   → Supprimer !important sur .reduce-motion = les transitions
+     définies avec une spécificité plus haute ne seraient pas
+     annulées (animations des modales, du hero, etc.).
+   ═══════════════════════════════════════════════════════════════ */
 /* ======== A11Y OVERRIDES ======== */
 .high-contrast {
   --text-primary: #000 !important; --text-secondary: #111 !important;
@@ -783,6 +1071,36 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 /* --- Smooth project card hover --- */
 .project-card:hover { transform: translateY(-6px); }
 
+/* ═══════════════════════════════════════════════════════════════
+   V8 — LOADER, CURSEUR, TRANSITIONS DE PAGE
+   ──────────────────────────────────────────
+   Ces trois composants fonctionnent ensemble pour créer
+   une expérience de navigation premium.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────────────────────────────────────────
+   LOADER — Écran de chargement avec logo animé
+   ───────────────────────────────────────────────
+   RÔLE : Recouvre toute la page pendant le chargement initial,
+   puis disparaît en fondu quand le JS ajoute .is-done.
+
+   z-index: 9999 = au-dessus de tout (y compris les modales).
+   visibility: hidden dans .is-done = en plus d'opacity:0, retire
+   le loader de l'accessibilité (lecteurs d'écran) et améliore
+   les performances (le navigateur ne rend plus l'élément).
+
+   ANIMATIONS DU LOGO :
+   loaderReveal = le conteneur SVG s'agrandit (scale 0.9 → 1).
+   logoFadeIn = le "C" apparaît avec un effect de blur qui se
+   dissipe (filter: blur(6px) → blur(0)).
+   logoDotPop = le point orange pop avec un rebond (scale 0 → 1.35 → 1).
+
+   EFFET DOMINO :
+   → Changer 2200ms dans le JS = le loader dure plus ou moins.
+   → Changer 0.7s (transition CSS) = le fondu de sortie plus rapide.
+   → Changer cubic-bezier(0.76, 0, 0.24, 1) = courbe d'accélération
+     différente pour la disparition du loader.
+   ─────────────────────────────────────────────────────────────── */
 /* ================================================================
    V8 ADDITIONS — Loader, Cursor, Page Transitions
    ================================================================ */
@@ -813,6 +1131,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 @keyframes logoFadeIn { 0% { opacity: 0; filter: blur(6px); } 60% { opacity: 1; filter: blur(0); } 100% { opacity: 1; } }
 @keyframes logoDotPop { 0% { opacity: 0; transform: scale(0); } 70% { opacity: 1; transform: scale(1.35); } 100% { opacity: 1; transform: scale(1); } }
 
+/* ───────────────────────────────────────────────────────────────
+   CURSEUR PERSONNALISÉ — Point qui suit la souris
+   ────────────────────────────────────────────────
+   position: fixed + transform: translate(-50%, -50%) = le curseur
+   est centré sur le pointeur réel de la souris.
+   mix-blend-mode: difference = le curseur inverts les couleurs
+   du fond en dessous (orange devient bleu-vert sur fond orange).
+   opacity:0 par défaut, 1 quand .is-visible (ajouté par le JS
+   au premier mouvement souris).
+   ─────────────────────────────────────────────────────────────── */
 /* CUSTOM CURSOR */
 .cursor-custom {
   position: fixed; width: 8px; height: 8px;
@@ -829,6 +1157,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
   border: 1px solid var(--accent);
 }
 
+/* ───────────────────────────────────────────────────────────────
+   TRANSITION DE PAGE — Overlay qui glisse lors des navigations
+   ─────────────────────────────────────────────────────────────
+   Par défaut : translateY(100%) = caché sous la page.
+   .is-entering : translateY(0) = monte pour couvrir la page.
+   .is-leaving  : translateY(-100%) = monte pour sortir par le haut.
+
+   z-index: 8000 = sous le loader (9999) mais au-dessus de tout
+   le contenu (10) et des modales (200).
+
+   pointer-events: none = la transition ne bloque pas les clics
+   dans les rares cas où elle reste visible.
+   ─────────────────────────────────────────────────────────────── */
 /* PAGE TRANSITION */
 .page-transition-overlay {
   position: fixed; inset: 0; z-index: 8000;
@@ -879,6 +1220,20 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
   flex-wrap: wrap;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   MARQUEE — Bandeau de texte défilant
+   ────────────────────────────────────
+   .marquee-strip__inner = flex avec width: max-content (s'étend
+   autant que le contenu le nécessite). L'animation marqueeScroll
+   translate de 0 à -50% : le contenu est dupliqué dans le HTML
+   (même liste de mots deux fois), donc à -50% on revient au
+   début visuellement → boucle seamless.
+
+   EFFET DOMINO :
+   → Changer 25s en 10s = le défilement est 2.5x plus rapide.
+   → Changer translate(-50%) en translate(-33%) = bogue si le
+     contenu n'est pas triplé dans le HTML (saut visible).
+   ─────────────────────────────────────────────────────────────── */
 /* MARQUEE STRIP */
 .marquee-strip {
   padding: var(--space-md) 0;

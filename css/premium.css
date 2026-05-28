@@ -3,6 +3,23 @@
    Chrisnaël Berdier Portfolio
 ═══════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════
+   TOKEN OVERRIDES — Redéfinit les tokens en mode sombre
+   ──────────────────────────────────────────────────────
+   RÔLE : Surcharge les variables CSS de base (style.css) pour
+   le design "dark luxury" de la page d'accueil.
+
+   Cibler [data-theme="dark"] ET [data-theme="auto"] = ces règles
+   s'appliquent aussi quand le thème est en mode automatique
+   (valeur par défaut de l'attribut HTML avant que JS n'applique
+   le thème sauvegardé). Évite un flash de couleur au chargement.
+
+   EFFET DOMINO :
+   → Changer --bg-primary: #07070f en #1a1a2e = le fond du site
+     en mode sombre sera moins noir, plus bleu nuit.
+   → Changer --accent: #FF7043 en #7C3AED = toutes les couleurs
+     d'accentuation passent du orange au violet.
+   ═══════════════════════════════════════════════════════════════ */
 /* ── Token overrides ──────────────────────────────────────── */
 [data-theme="dark"],
 [data-theme="auto"] {
@@ -37,6 +54,32 @@ body {
   overflow: hidden;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   GLOWING ORBS — Halos lumineux de fond du hero
+   ───────────────────────────────────────────────
+   RÔLE : Trois cercles flous positionnés en absolute dans le hero,
+   qui créent des halos de lumière colorée en arrière-plan.
+
+   Chaque orbe est un gradient radial (cercle → transparent) sur
+   un div 100% circulaire (border-radius: 50%). Le flou CSS de
+   l'animation + la transparence créent l'effet lumineux.
+
+   will-change: transform = indique au navigateur que ces éléments
+   vont être transformés. Il peut les placer sur le GPU à l'avance,
+   améliorant les performances de l'animation.
+
+   L'animation orbFloat fait varier translate et scale légèrement
+   (28px / 18px / 0.96-1.06) sur de longues durées (14s-22s)
+   pour un mouvement organique imperceptiblement lent.
+
+   EFFET DOMINO :
+   → Changer rgba(255,112,67,0.16) en rgba(255,112,67,0.4) =
+     les halos seront beaucoup plus intenses/visibles.
+   → Changer width: 720px en 1200px = le halo orange sera plus
+     grand, occupe plus d'espace dans le hero.
+   → Supprimer will-change: transform = pas de GPU, légère
+     dégradation des performances d'animation sur appareils lents.
+   ═══════════════════════════════════════════════════════════════ */
 /* Glowing orbs */
 .hero__orb {
   position: absolute;
@@ -173,6 +216,24 @@ body {
   align-self: stretch;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   GLASS SYSTEM — Système de cartes glassmorphisme
+   ─────────────────────────────────────────────────
+   RÔLE : Classe réutilisable pour l'effet "verre givré" utilisé
+   sur les stats, les cartes contact, les modales, etc.
+
+   MÉCANISME DU GLASSMORPHISME (3 ingrédients) :
+   1. background: rgba(255,255,255,0.04) = fond blanc ultra-transparent.
+   2. backdrop-filter: blur(20px) = floute le contenu visible derrière.
+   3. border: rgba(255,255,255,0.08) = fin reflet lumineux façon verre.
+   -webkit-backdrop-filter = préfixe Safari OBLIGATOIRE.
+
+   EFFET DOMINO :
+   → blur(20px) → blur(2px) = verre quasi-invisible (pas de flou).
+   → rgba(0.04) → rgba(0.2) = cartes plus opaques, moins "glass".
+   → Supprimer -webkit-backdrop-filter = l'effet disparaît sur
+     tous les appareils Apple (iOS Safari, macOS Safari).
+   ═══════════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════
    GLASS SYSTEM
 ═══════════════════════════════════════════════════════════ */
@@ -675,6 +736,31 @@ body {
 }
 
 
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES — Corrections pour le thème clair
+   ────────────────────────────────────────────────────────
+   RÔLE : premium.css est conçu pour le mode sombre. Ces règles
+   corrigent les problèmes de contraste et de lisibilité quand
+   l'utilisateur bascule en mode clair.
+
+   POURQUOI LES !important ?
+   Les règles de premium.css utilisent des valeurs hardcodées
+   (rgba(255,255,255,0.04), rgba(255,255,255,0.32)...) qui ne
+   répondent pas aux variables CSS --text-primary etc. en mode clair.
+   Le !important est donc nécessaire pour les surcharger avec
+   les bonnes couleurs claires.
+
+   Ce bloc est un exemple concret du problème du "dark-first" :
+   quand on design en sombre d'abord, le clair nécessite des
+   corrections explicites. L'approche inverse (light-first)
+   aurait nécessité des overrides pour le sombre.
+
+   EFFET DOMINO :
+   → Supprimer ce bloc entier = en mode clair, beaucoup de textes
+     seront blancs sur fond blanc (illisibles).
+   → Ajouter une correction manquante = un composant restera avec
+     ses couleurs sombres en mode clair.
+   ═══════════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════
    LIGHT MODE - overrides pour corriger les contrastes
 ═══════════════════════════════════════════════════════════ */
