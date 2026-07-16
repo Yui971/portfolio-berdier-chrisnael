@@ -991,7 +991,7 @@ const Loader = (() => {
     const loader = document.getElementById('site-loader');
     if (!loader) return;
     window.addEventListener('load', () => {
-      setTimeout(() => loader.classList.add('is-done'), 2200);
+      setTimeout(() => loader.classList.add('is-done'), 600);
     });
   }
   return { init };
