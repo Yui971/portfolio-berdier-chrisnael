@@ -525,7 +525,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 .about { background: var(--bg-secondary); }
 .about__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-3xl); align-items: center; }
 .about__image-wrap {
-  position: relative; aspect-ratio: 4/5; border-radius: var(--radius-lg);
+  position: relative; width: 100%; aspect-ratio: 4/5; border-radius: var(--radius-lg);
   background: var(--bg-tertiary); max-width: 380px; margin: 0 auto;
   box-shadow: var(--shadow-lg); border: 2px solid var(--border); transition: border-color var(--duration-base);
   perspective: 1400px; cursor: pointer;

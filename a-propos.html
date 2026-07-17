@@ -31,6 +31,7 @@
   <meta name="twitter:image" content="https://yui971.github.io/portfolio-berdier-chrisnael/assets/img/og-cover.jpg">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/premium.css">
 </head>
 <body>
   <canvas class="page-particles" id="particles-canvas" aria-hidden="true"></canvas>
@@ -96,8 +97,28 @@
     <section class="about section">
       <div class="container">
         <div class="about__grid">
-          <div class="about__image-wrap reveal">
-            <img src="assets/img/portrait.webp" alt="Portrait de Chrisnaël Berdier" loading="eager">
+          <div class="about__image-wrap reveal" role="img" aria-label="Portrait de Chrisnaël Berdier — survoler pour plus d'infos">
+            <div class="about__flip-inner">
+              <!-- FACE : photo -->
+              <div class="about__flip-front">
+                <div class="about__img-glow" aria-hidden="true"></div>
+                <img src="assets/img/portrait.webp" alt="" loading="eager">
+                <div class="about__img-badge glass-card" aria-hidden="true"><span>🎓</span> BUT MMI</div>
+              </div>
+              <!-- DOS : carte éditoriale -->
+              <div class="about__flip-back">
+                <span class="about-back__year" aria-hidden="true">2026</span>
+                <div class="about-back__body">
+                  <h3 class="about-back__name">Chrisnaël<br>Berdier<span class="about-back__dot" aria-hidden="true">.</span></h3>
+                  <p class="about-back__role">Designer Graphique</p>
+                  <p class="about-back__place">Guadeloupe, France</p>
+                </div>
+                <div class="about-back__badge">
+                  <span class="about-back__pulse" aria-hidden="true"></span>
+                  Disponible sept. 2026
+                </div>
+              </div>
+            </div>
           </div>
           <div class="about__text reveal stagger-2">
             <h2 class="section__title" data-i18n="apropos.name">Chrisnaël Berdier</h2>
