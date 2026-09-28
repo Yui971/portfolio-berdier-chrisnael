@@ -644,10 +644,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 .projects__mascotte {
   display: none;
   position: absolute;
-  left: calc(50% + 220px);
+  left: calc(50% + 200px);
   top: 50%;
   transform: translateY(-50%) rotate(-4deg);
-  width: 150px;
+  width: 230px;
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.35));
   pointer-events: none;
 }
