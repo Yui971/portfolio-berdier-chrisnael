@@ -639,7 +639,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
   background: none; border: none; cursor: pointer; padding: 0;
 }
 .project-card__link:hover { gap: var(--space-sm); }
-.projects__more { text-align: center; margin-top: var(--space-2xl); }
+.projects__more { position: relative; text-align: center; margin-top: var(--space-2xl); }
+
+.projects__mascotte {
+  display: none;
+  position: absolute;
+  left: calc(50% + 220px);
+  top: 50%;
+  transform: translateY(-50%) rotate(-4deg);
+  width: 150px;
+  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+@media (min-width: 900px) { .projects__mascotte { display: block; } }
 @media (min-width: 600px) { .projects__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .projects__grid { grid-template-columns: repeat(3, 1fr); } }
 
