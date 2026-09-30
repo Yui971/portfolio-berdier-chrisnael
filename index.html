@@ -422,6 +422,50 @@
 
     <!--
       ═══════════════════════════════════════════════════════════
+      SECTION VIDÉO CV — Présentation motion design (25 s)
+      ─────────────────────────────────────────────────────
+      Rôle : Vidéo de présentation (nom, BUT MMI, compétences, projets,
+      contact) avec sound design, générée avec Remotion depuis le projet
+      ../video-cv (npm run render:web → assets/video/).
+      Fichiers : video-cv-fr.mp4 / video-cv-en.mp4 (720p, son AAC)
+      + affiches video-cv-poster-fr.jpg / -en.jpg (image avant lecture).
+      Le module VideoCV (main.js) :
+        - charge la version FR ou EN selon la langue choisie (ES → EN) ;
+        - lance la vidéo EN MUET quand elle est visible à 50 % et la met
+          en pause quand elle sort de l'écran (les navigateurs interdisent
+          la lecture automatique avec le son) ; le visiteur active le son
+          avec les contrôles natifs ;
+        - ne la lance jamais si « Réduire animations » (widget) ou
+          prefers-reduced-motion est actif.
+      Accessibilité : contrôles natifs (pause, volume, plein écran),
+      figcaption relié par aria-describedby, transcription textuelle
+      dans <details> (RGAA : alternative au contenu de la vidéo).
+      Effet domino : Supprimer muted → le navigateur bloque la lecture
+      automatique. Supprimer playsinline → plein écran forcé sur iPhone.
+      Changer l'id video-cv-player → le module VideoCV ne trouve plus
+      la vidéo (plus de changement de langue ni de lecture auto).
+      ═══════════════════════════════════════════════════════════
+    -->
+    <!-- ═══════════════════════════════════ VIDÉO CV ═══════════════════════════════════ -->
+    <section class="video-cv section" aria-labelledby="video-cv-title">
+      <div class="container">
+        <p class="section__label reveal" data-i18n="videocv.label">Vidéo CV</p>
+        <h2 class="section__title reveal" id="video-cv-title" data-i18n="videocv.title">Mon profil en 25&nbsp;secondes</h2>
+        <figure class="video-cv__figure reveal">
+          <div class="video-cv__frame">
+            <video class="video-cv__player" id="video-cv-player" src="assets/video/video-cv-fr.mp4" poster="assets/video/video-cv-poster-fr.jpg" controls muted loop playsinline preload="metadata" aria-describedby="video-cv-desc"></video>
+          </div>
+          <figcaption class="video-cv__caption" id="video-cv-desc" data-i18n="videocv.desc">Lecture muette par défaut : activez le son 🔊 pour le sound design (effets sonores, sans voix). Présentation, compétences, projets et contact.</figcaption>
+        </figure>
+        <details class="video-cv__transcript reveal">
+          <summary data-i18n="videocv.transcriptTitle">Transcription textuelle</summary>
+          <p data-i18n="videocv.transcript">Chrisnaël Berdier — designer graphique, développeur web, direction artistique. Étudiant en 2e année de BUT MMI, parcours Création numérique, à l'Université des Antilles. Je cherche une alternance, disponible dès maintenant en Guadeloupe. Compétences : Photoshop, Figma, Canva, HTML/CSS, JavaScript, montage vidéo (CapCut), accessibilité numérique (RGAA 4.1). Projets sélectionnés : couverture de magazine « Icone » (Canva), affiche d'exposition « James Gill, Pop Art Legacy » (Photoshop), affiche de concert « Tame Impala » style Swiss (Canva), affiche de film « Peaky Blinders : L'Immortel » (Photoshop), ainsi que des sites web (HTML, CSS, JS, WordPress, Astro) — plus de 10 projets réalisés. Travaillons ensemble : chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn : Chrisnaël Berdier.</p>
+        </details>
+      </div>
+    </section>
+
+    <!--
+      ═══════════════════════════════════════════════════════════
       SECTION ABOUT — Présentation personnelle
       ─────────────────────────────────────────
       Rôle : Bloc de présentation avec portrait, texte biographique

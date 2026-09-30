@@ -539,6 +539,39 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weigh
 .stat__label { font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-xs); }
 @media (min-width: 768px) { .about__grid { grid-template-columns: 1fr 1.3fr; } }
 
+/* ═══════════════════════════════════════════════════════════════
+   VIDÉO CV — lecteur 16:9 de la page d'accueil
+   ─────────────────────────────────────────────
+   Rôle : cadre arrondi avec lueur orange autour de la vidéo,
+   légende et transcription dépliable (+ / −).
+   Effet domino : Retirer aspect-ratio sur .video-cv__frame → le cadre
+   prend la hauteur par défaut d'un <video> (150 px) avant chargement.
+   Retirer ::-webkit-details-marker → double marqueur (triangle + « + »)
+   sur Safari.
+   ═══════════════════════════════════════════════════════════════ */
+/* ======== VIDÉO CV ======== */
+.video-cv__figure { margin: 0; }
+.video-cv__frame {
+  position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden;
+  background: #07070f; border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+.video-cv__player { display: block; width: 100%; height: 100%; object-fit: cover; background: #07070f; }
+.video-cv__caption { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--text-tertiary); }
+.video-cv__transcript { margin-top: var(--space-lg); max-width: 75ch; color: var(--text-secondary); }
+.video-cv__transcript summary {
+  display: inline-flex; align-items: center; gap: var(--space-sm);
+  font-weight: 600; color: var(--text-primary); cursor: pointer; border-radius: var(--radius-sm);
+}
+.video-cv__transcript summary::-webkit-details-marker { display: none; }
+.video-cv__transcript summary::before {
+  content: '+'; display: inline-grid; place-items: center; width: 1.5em; height: 1.5em;
+  border-radius: var(--radius-full); background: var(--accent-soft); color: var(--accent); font-weight: 700;
+}
+.video-cv__transcript[open] summary::before { content: '−'; }
+.video-cv__transcript summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.video-cv__transcript p { margin-top: var(--space-md); font-size: var(--text-sm); line-height: 1.7; }
+
 /* ======== PROJECTS (cards, filters, search) ======== */
 .projects__toolbar { display: flex; flex-direction: column; gap: var(--space-lg); margin-bottom: var(--space-2xl); }
 .projects__search { position: relative; max-width: 400px; }

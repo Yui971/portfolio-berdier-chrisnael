@@ -1147,6 +1147,12 @@ const LangSelector = (() => {
       'hero.greeting': '👋 Salut, moi c\'est',
       'hero.subtitle': 'Étudiant en BUT MMI, je crée des identités visuelles percutantes, des interfaces soignées et des supports de communication qui marquent les esprits.',
       'hero.badge': 'Disponible pour un stage ou une alternance',
+      // VIDÉO CV (homepage)
+      'videocv.label': 'Vidéo CV',
+      'videocv.title': 'Mon profil en 25\u00a0secondes',
+      'videocv.desc': 'Lecture muette par défaut : activez le son 🔊 pour le sound design (effets sonores, sans voix). Présentation, compétences, projets et contact.',
+      'videocv.transcriptTitle': 'Transcription textuelle',
+      'videocv.transcript': 'Chrisnaël Berdier — designer graphique, développeur web, direction artistique. Étudiant en 2e année de BUT MMI, parcours Création numérique, à l\'Université des Antilles. Je cherche une alternance, disponible dès maintenant en Guadeloupe. Compétences : Photoshop, Figma, Canva, HTML/CSS, JavaScript, montage vidéo (CapCut), accessibilité numérique (RGAA 4.1). Projets sélectionnés : couverture de magazine « Icone » (Canva), affiche d\'exposition « James Gill, Pop Art Legacy » (Photoshop), affiche de concert « Tame Impala » style Swiss (Canva), affiche de film « Peaky Blinders : L\'Immortel » (Photoshop), ainsi que des sites web (HTML, CSS, JS, WordPress, Astro) — plus de 10 projets réalisés. Travaillons ensemble : chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn : Chrisnaël Berdier.',
       // ABOUT (homepage)
       'about.label': 'À propos',
       'about.title': 'Le design au service du sens',
@@ -1178,6 +1184,11 @@ const LangSelector = (() => {
       'hero.greeting': '👋 Hi, I\'m',
       'hero.subtitle': 'Multimedia & Internet student, I create striking visual identities, refined interfaces and communication materials that leave a lasting impression.',
       'hero.badge': 'Available for internship or work-study',
+      'videocv.label': 'Video CV',
+      'videocv.title': 'My profile in 25\u00a0seconds',
+      'videocv.desc': 'Plays muted by default: turn the sound on 🔊 for the sound design (sound effects only, no voice). Introduction, skills, projects and contact.',
+      'videocv.transcriptTitle': 'Text transcript',
+      'videocv.transcript': 'Chrisnaël Berdier — graphic designer, web developer, art direction. Second-year student in BUT MMI (Multimedia & Internet), Digital Creation track, at the Université des Antilles. I\'m looking for a work-study placement, available now in Guadeloupe, France. Skills: Photoshop, Figma, Canva, HTML/CSS, JavaScript, video editing (CapCut), digital accessibility (WCAG / RGAA). Selected projects: “Icone” magazine cover (Canva), “James Gill, Pop Art Legacy” exhibition poster (Photoshop), “Tame Impala” Swiss-style concert poster (Canva), “Peaky Blinders: L\'Immortel” film poster (Photoshop), plus websites (HTML, CSS, JS, WordPress, Astro) — 10+ projects completed. Let\'s work together: chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn: Chrisnaël Berdier.',
       'about.label': 'About',
       'about.title': 'Design in service of meaning',
       'about.p1': 'Multimedia & Internet student, I specialize in graphic design and visual communication. My approach blends creativity, typographic precision and aesthetic sensibility to craft visuals and identities that tell a story.',
@@ -1203,6 +1214,11 @@ const LangSelector = (() => {
       'hero.greeting': '👋 Hola, soy',
       'hero.subtitle': 'Estudiante de Multimedia e Internet, creo identidades visuales impactantes, interfaces cuidadas y materiales de comunicación que dejan huella.',
       'hero.badge': 'Disponible para prácticas o alternancia',
+      'videocv.label': 'Vídeo CV',
+      'videocv.title': 'Mi perfil en 25\u00a0segundos',
+      'videocv.desc': 'Se reproduce sin sonido por defecto: activa el sonido 🔊 para el diseño sonoro (solo efectos, sin voz). Vídeo en inglés: presentación, habilidades, proyectos y contacto.',
+      'videocv.transcriptTitle': 'Transcripción textual',
+      'videocv.transcript': 'Chrisnaël Berdier — diseñador gráfico, desarrollador web, dirección artística. Estudiante de segundo año de BUT MMI (Multimedia e Internet), itinerario Creación Digital, en la Université des Antilles. Busco una alternancia (formación en alternancia), disponible ahora mismo en Guadalupe. Habilidades: Photoshop, Figma, Canva, HTML/CSS, JavaScript, edición de vídeo (CapCut), accesibilidad digital (WCAG / RGAA). Proyectos seleccionados: portada de revista «Icone» (Canva), cartel de exposición «James Gill, Pop Art Legacy» (Photoshop), cartel de concierto «Tame Impala» estilo suizo (Canva), cartel de película «Peaky Blinders: L\'Immortel» (Photoshop), además de sitios web (HTML, CSS, JS, WordPress, Astro) — más de 10 proyectos realizados. Trabajemos juntos: chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn: Chrisnaël Berdier.',
       'about.label': 'Sobre mí',
       'about.title': 'Diseño al servicio del sentido',
       'about.p1': 'Estudiante de Multimedia e Internet, me especializo en diseño gráfico y comunicación visual. Mi enfoque combina creatividad, rigor tipográfico y sensibilidad estética para crear visuales e identidades que cuentan una historia.',
@@ -1247,6 +1263,8 @@ const LangSelector = (() => {
       const key = el.getAttribute('data-i18n-placeholder');
       if (dict[key]) el.setAttribute('placeholder', dict[key]);
     });
+    // Prévient les autres modules (ex. VideoCV) du changement de langue
+    document.dispatchEvent(new CustomEvent('portfolio:langchange', { detail: { lang } }));
   }
 
   function init() {
@@ -1287,3 +1305,79 @@ const LangSelector = (() => {
 })();
 
 LangSelector.init();
+
+/* ═══════════════════════════════════════════════════════════════
+   MODULE V9 : VIDÉO CV (VideoCV)
+   ─────────────────────────────────
+   RÔLE : Pilote la vidéo de la section « Vidéo CV » de l'accueil :
+   choix de la langue et lecture automatique muette.
+
+   LOGIQUE :
+   - Langue : lit 'portfolio-lang' au chargement puis écoute
+     l'événement 'portfolio:langchange' envoyé par LangSelector.
+     FR → video-cv-fr.mp4, EN et ES → video-cv-en.mp4. Changer de
+     source remet la vidéo au début (load()) et relance la lecture
+     si elle jouait.
+   - Lecture : un IntersectionObserver lance la vidéo (muette) quand
+     elle est visible à 50 % et la met en pause hors écran, pour ne
+     pas consommer de batterie. Une pause faite par le visiteur est
+     respectée (userPaused) : le scroll ne relance pas la vidéo.
+   - Accessibilité : aucune lecture automatique si prefers-reduced-motion
+     ou si « Réduire animations » du widget (body.reduce-motion) est actif.
+
+   EFFET DOMINO :
+   → Renommer les fichiers de assets/video/ sans modifier SOURCES
+     = vidéo introuvable (lecteur vide).
+   → Supprimer le dispatchEvent dans LangSelector.applyTranslations
+     = la vidéo reste dans la langue du chargement.
+   → Retirer l'attribut muted du <video> = le navigateur bloque la
+     lecture automatique (play() rejeté, attrapé par .catch).
+   ═══════════════════════════════════════════════════════════════ */
+const VideoCV = (() => {
+  const SOURCES = {
+    fr: { src: 'assets/video/video-cv-fr.mp4', poster: 'assets/video/video-cv-poster-fr.jpg' },
+    en: { src: 'assets/video/video-cv-en.mp4', poster: 'assets/video/video-cv-poster-en.jpg' }
+  };
+  let video = null;
+  let userPaused = false;
+  let autoPausing = false;
+
+  function reducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.body.classList.contains('reduce-motion');
+  }
+
+  function setLang(lang) {
+    const source = SOURCES[lang] || SOURCES.en;
+    if (video.getAttribute('src') === source.src) return;
+    const wasPlaying = !video.paused;
+    video.setAttribute('poster', source.poster);
+    video.setAttribute('src', source.src);
+    video.load();
+    if (wasPlaying) video.play().catch(() => {});
+  }
+
+  function init() {
+    video = document.getElementById('video-cv-player');
+    if (!video) return;
+    setLang(localStorage.getItem('portfolio-lang') || 'fr');
+    document.addEventListener('portfolio:langchange', (e) => setLang(e.detail.lang));
+
+    // Une pause demandée par le visiteur n'est pas annulée par le scroll
+    video.addEventListener('pause', () => { if (!autoPausing) userPaused = true; autoPausing = false; });
+    video.addEventListener('play', () => { userPaused = false; });
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (!userPaused && !reducedMotion()) video.play().catch(() => {});
+      } else if (!video.paused) {
+        autoPausing = true;
+        video.pause();
+      }
+    }, { threshold: 0.5 });
+    observer.observe(video);
+  }
+  return { init };
+})();
+
+VideoCV.init();
