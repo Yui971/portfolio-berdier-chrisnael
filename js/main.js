@@ -424,44 +424,6 @@ const ProjectFilters = (() => {
 
 
 /* ═══════════════════════════════════════════════════════════════
-   MODULE 6 : BARRES DE COMPÉTENCES (SkillBars)
-   ──────────────────────────────────────────────
-   RÔLE : Anime les barres de progression des compétences quand
-   elles entrent dans le viewport.
-
-   LOGIQUE :
-   IntersectionObserver observe chaque bloc .skill-category.
-   Quand il entre à 30% de visibilité, on lit data-width sur
-   chaque .skill-item__fill et on l'applique comme width inline.
-   La transition CSS (width 1.2s) fait le reste visuellement.
-   observer.unobserve() arrête l'observation après le premier
-   déclenchement : l'animation ne se rejoue pas si on rescrolle.
-
-   EFFET DOMINO :
-   → Changer data-width="40" en "70" dans le HTML = la barre
-     d'Adobe Illustrator atteindra 70% au lieu de 40%.
-   → Changer threshold: 0.3 en 0.8 = l'animation se déclenche
-     seulement quand 80% du bloc est visible (plus tardif).
-   → Supprimer observer.unobserve() = l'animation se redéclenche
-     chaque fois qu'on scroll vers la section compétences.
-   ═══════════════════════════════════════════════════════════════ */
-const SkillBars = (() => {
-  function init() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.querySelectorAll('.skill-item__fill').forEach(fill => { fill.style.width = fill.dataset.width + '%'; });
-          observer.unobserve(entry.target); // Ne rejoue pas l'animation
-        }
-      });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.skill-category').forEach(cat => observer.observe(cat));
-  }
-  return { init };
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════
    MODULE 7 : COMPTEUR ANIMÉ (CountUp)
    ─────────────────────────────────────
    RÔLE : Anime les chiffres des statistiques (ex: "0" → "10+")
@@ -602,6 +564,8 @@ const ContactForm = (() => {
    ═══════════════════════════════════════════════════════════════ */
 const ProjectModal = (() => {
   let zoom = 1, panX = 0, panY = 0;
+  let openRef = null;      // openModal, exposée via ProjectModal.open(el) (carte des compétences)
+  let lastTrigger = null;  // élément à re-focaliser à la fermeture (RGAA : le focus revient d'où il vient)
   let dragging = false, dsx = 0, dsy = 0, spx = 0, spy = 0;
   const STEP = 0.25, MIN = 0.5, MAX = 3;
 
@@ -638,6 +602,7 @@ const ProjectModal = (() => {
     }
 
     function openModal(card) {
+      lastTrigger = document.activeElement;
       clearMedia();
       resetView();
 
@@ -696,7 +661,10 @@ const ProjectModal = (() => {
       document.body.style.overflow = '';
       clearMedia();
       resetView();
+      if (lastTrigger && document.contains(lastTrigger)) lastTrigger.focus();
+      lastTrigger = null;
     }
+    openRef = openModal;
 
     // Zoom boutons
     if (zoomIn) zoomIn.addEventListener('click', function(e) { e.stopPropagation(); if (zoom < MAX) { zoom += STEP; applyTransform(); } });
@@ -771,7 +739,9 @@ const ProjectModal = (() => {
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal(); });
   }
-  return { init };
+  // Ouvre la modale depuis n'importe quel élément portant les data-project-* (ex. bouton « Voir le projet » de la carte)
+  function open(el) { if (openRef) openRef(el); }
+  return { init, open };
 })();
 
 
@@ -959,7 +929,6 @@ document.addEventListener('DOMContentLoaded', function() {
   ProjectFilters.init();
   ProjectModal.init();
   CVViewer.init();
-  SkillBars.init();
   CountUp.init();
   ContactForm.init();
   LegalModal.init();
@@ -1153,6 +1122,39 @@ const LangSelector = (() => {
       'videocv.desc': 'Lecture muette par défaut : activez le son 🔊 pour le sound design (effets sonores, sans voix). Présentation, compétences, projets et contact.',
       'videocv.transcriptTitle': 'Transcription textuelle',
       'videocv.transcript': 'Chrisnaël Berdier — designer graphique, développeur web, direction artistique. Étudiant en 2e année de BUT MMI, parcours Création numérique, à l\'Université des Antilles. Je cherche une alternance, disponible dès maintenant en Guadeloupe. Compétences : Photoshop, Figma, Canva, HTML/CSS, JavaScript, montage vidéo (CapCut), accessibilité numérique (RGAA 4.1). Projets sélectionnés : couverture de magazine « Icone » (Canva), affiche d\'exposition « James Gill, Pop Art Legacy » (Photoshop), affiche de concert « Tame Impala » style Swiss (Canva), affiche de film « Peaky Blinders : L\'Immortel » (Photoshop), ainsi que des sites web (HTML, CSS, JS, WordPress, Astro) — plus de 10 projets réalisés. Travaillons ensemble : chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn : Chrisnaël Berdier.',
+      // CARTE DES COMPÉTENCES (homepage)
+      'skills.label': 'Savoir-faire',
+      'skills.mapTitle': 'Mon parcours de compétences',
+      'skills.mapIntro': 'Chaque niveau débloqué correspond à un projet réalisé. Sélectionnez un niveau pour voir la preuve.',
+      'skills.w1': 'Design graphique',
+      'skills.w2': 'Développement web',
+      'skills.w3': 'Vidéo',
+      'skills.w4': 'UX et accessibilité',
+      'skills.state.done': 'Maîtrisé',
+      'skills.state.progress': 'En progression',
+      'skills.state.locked': 'À débloquer',
+      'skills.open': 'Voir le projet',
+      'skills.legend': 'Légende',
+      'skills.replay': 'Rejouer le parcours',
+      'skills.goalTitle': 'Niveau suivant',
+      'skills.goalText': 'Votre entreprise ?',
+      'skills.goalCta': 'Débloquer ce niveau',
+      'skills.n.typo': 'Typographie',
+      'skills.n.video': 'Montage vidéo',
+      'skills.n.ux': 'Recherche UX',
+      'skills.n.a11y': 'Accessibilité RGAA',
+      'skills.p.canva': 'Couverture magazine « Icone »',
+      'skills.p.typo': 'Affiche de concert Tame Impala, style Swiss',
+      'skills.p.photoshop': 'Affiche d\'exposition James Gill, Pop Art Legacy',
+      'skills.p.figma': 'Maquettes et prototypes d\'interfaces',
+      'skills.p.next': 'Prochain niveau : à débloquer en alternance',
+      'skills.p.html': 'Site Marëis, protection marine',
+      'skills.p.js': 'Landing page AirPods Pro 3, animations GSAP',
+      'skills.p.wp': 'Boutique The Sillies (WooCommerce)',
+      'skills.p.astro': 'Guide « Mon voyage à Paris »',
+      'skills.p.video': 'Production audiovisuelle sur CapCut',
+      'skills.p.ux': 'Personas et parcours utilisateurs',
+      'skills.p.a11y': 'Ce site : navigation clavier, contrastes, widget d\'accessibilité',
       // ABOUT (homepage)
       'about.label': 'À propos',
       'about.title': 'Le design au service du sens',
@@ -1189,6 +1191,38 @@ const LangSelector = (() => {
       'videocv.desc': 'Plays muted by default: turn the sound on 🔊 for the sound design (sound effects only, no voice). Introduction, skills, projects and contact.',
       'videocv.transcriptTitle': 'Text transcript',
       'videocv.transcript': 'Chrisnaël Berdier — graphic designer, web developer, art direction. Second-year student in BUT MMI (Multimedia & Internet), Digital Creation track, at the Université des Antilles. I\'m looking for a work-study placement, available now in Guadeloupe, France. Skills: Photoshop, Figma, Canva, HTML/CSS, JavaScript, video editing (CapCut), digital accessibility (WCAG / RGAA). Selected projects: “Icone” magazine cover (Canva), “James Gill, Pop Art Legacy” exhibition poster (Photoshop), “Tame Impala” Swiss-style concert poster (Canva), “Peaky Blinders: L\'Immortel” film poster (Photoshop), plus websites (HTML, CSS, JS, WordPress, Astro) — 10+ projects completed. Let\'s work together: chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn: Chrisnaël Berdier.',
+      'skills.label': 'Know-how',
+      'skills.mapTitle': 'My skills journey',
+      'skills.mapIntro': 'Every unlocked level matches a finished project. Select a level to see the proof.',
+      'skills.w1': 'Graphic design',
+      'skills.w2': 'Web development',
+      'skills.w3': 'Video',
+      'skills.w4': 'UX and accessibility',
+      'skills.state.done': 'Mastered',
+      'skills.state.progress': 'In progress',
+      'skills.state.locked': 'To unlock',
+      'skills.open': 'View project',
+      'skills.legend': 'Legend',
+      'skills.replay': 'Replay the journey',
+      'skills.goalTitle': 'Next level',
+      'skills.goalText': 'Your company?',
+      'skills.goalCta': 'Unlock this level',
+      'skills.n.typo': 'Typography',
+      'skills.n.video': 'Video editing',
+      'skills.n.ux': 'UX research',
+      'skills.n.a11y': 'Accessibility (RGAA)',
+      'skills.p.canva': '“Icone” magazine cover',
+      'skills.p.typo': 'Swiss-style Tame Impala concert poster',
+      'skills.p.photoshop': 'James Gill “Pop Art Legacy” exhibition poster',
+      'skills.p.figma': 'Interface mockups and prototypes',
+      'skills.p.next': 'Next level: to unlock during my work-study',
+      'skills.p.html': 'Marëis website, marine protection',
+      'skills.p.js': 'AirPods Pro 3 landing page, GSAP animations',
+      'skills.p.wp': 'The Sillies online shop (WooCommerce)',
+      'skills.p.astro': '“Mon voyage à Paris” travel guide',
+      'skills.p.video': 'Video production on CapCut',
+      'skills.p.ux': 'Personas and user journeys',
+      'skills.p.a11y': 'This site: keyboard navigation, contrast, accessibility widget',
       'about.label': 'About',
       'about.title': 'Design in service of meaning',
       'about.p1': 'Multimedia & Internet student, I specialize in graphic design and visual communication. My approach blends creativity, typographic precision and aesthetic sensibility to craft visuals and identities that tell a story.',
@@ -1219,6 +1253,38 @@ const LangSelector = (() => {
       'videocv.desc': 'Se reproduce sin sonido por defecto: activa el sonido 🔊 para el diseño sonoro (solo efectos, sin voz). Vídeo en inglés: presentación, habilidades, proyectos y contacto.',
       'videocv.transcriptTitle': 'Transcripción textual',
       'videocv.transcript': 'Chrisnaël Berdier — diseñador gráfico, desarrollador web, dirección artística. Estudiante de segundo año de BUT MMI (Multimedia e Internet), itinerario Creación Digital, en la Université des Antilles. Busco una alternancia (formación en alternancia), disponible ahora mismo en Guadalupe. Habilidades: Photoshop, Figma, Canva, HTML/CSS, JavaScript, edición de vídeo (CapCut), accesibilidad digital (WCAG / RGAA). Proyectos seleccionados: portada de revista «Icone» (Canva), cartel de exposición «James Gill, Pop Art Legacy» (Photoshop), cartel de concierto «Tame Impala» estilo suizo (Canva), cartel de película «Peaky Blinders: L\'Immortel» (Photoshop), además de sitios web (HTML, CSS, JS, WordPress, Astro) — más de 10 proyectos realizados. Trabajemos juntos: chrisnaelberdier.com, berdierchrisnael@gmail.com, +590 690 94 14 49, LinkedIn: Chrisnaël Berdier.',
+      'skills.label': 'Saber hacer',
+      'skills.mapTitle': 'Mi recorrido de habilidades',
+      'skills.mapIntro': 'Cada nivel desbloqueado corresponde a un proyecto realizado. Selecciona un nivel para ver la prueba.',
+      'skills.w1': 'Diseño gráfico',
+      'skills.w2': 'Desarrollo web',
+      'skills.w3': 'Vídeo',
+      'skills.w4': 'UX y accesibilidad',
+      'skills.state.done': 'Dominado',
+      'skills.state.progress': 'En progreso',
+      'skills.state.locked': 'Por desbloquear',
+      'skills.open': 'Ver el proyecto',
+      'skills.legend': 'Leyenda',
+      'skills.replay': 'Repetir el recorrido',
+      'skills.goalTitle': 'Siguiente nivel',
+      'skills.goalText': '¿Su empresa?',
+      'skills.goalCta': 'Desbloquear este nivel',
+      'skills.n.typo': 'Tipografía',
+      'skills.n.video': 'Edición de vídeo',
+      'skills.n.ux': 'Investigación UX',
+      'skills.n.a11y': 'Accesibilidad (RGAA)',
+      'skills.p.canva': 'Portada de revista «Icone»',
+      'skills.p.typo': 'Cartel de concierto Tame Impala, estilo suizo',
+      'skills.p.photoshop': 'Cartel de exposición James Gill, Pop Art Legacy',
+      'skills.p.figma': 'Maquetas y prototipos de interfaces',
+      'skills.p.next': 'Siguiente nivel: por desbloquear en alternancia',
+      'skills.p.html': 'Sitio Marëis, protección marina',
+      'skills.p.js': 'Landing page AirPods Pro 3, animaciones GSAP',
+      'skills.p.wp': 'Tienda The Sillies (WooCommerce)',
+      'skills.p.astro': 'Guía «Mon voyage à Paris»',
+      'skills.p.video': 'Producción audiovisual en CapCut',
+      'skills.p.ux': 'Personas y recorridos de usuario',
+      'skills.p.a11y': 'Este sitio: navegación con teclado, contrastes, widget de accesibilidad',
       'about.label': 'Sobre mí',
       'about.title': 'Diseño al servicio del sentido',
       'about.p1': 'Estudiante de Multimedia e Internet, me especializo en diseño gráfico y comunicación visual. Mi enfoque combina creatividad, rigor tipográfico y sensibilidad estética para crear visuales e identidades que cuentan una historia.',
@@ -1381,3 +1447,355 @@ const VideoCV = (() => {
 })();
 
 VideoCV.init();
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MODULE V10 : CARTE DE PARCOURS DES COMPÉTENCES (SkillMap)
+   ──────────────────────────────────────────────────────────
+   RÔLE : Transforme la liste #skill-map (section compétences de
+   l'accueil) en carte de jeu : une île par « monde », un chemin en
+   pointillés, et le carré orange du logo « C. » qui avance de niveau
+   en niveau en les débloquant, jusqu'au château « Niveau suivant ».
+
+   LOGIQUE :
+   - layout() calcule la position des niveaux selon la largeur :
+     ≥ 1000 px → parcours horizontal (alternance haut/bas),
+     sinon → parcours vertical en zigzag. Il dessine ensuite l'SVG
+     (îles à forme fixe grâce à un aléatoire à graine, chemin lissé
+     Catmull-Rom, château) et mesure la longueur du chemin à chaque
+     niveau (stops).
+   - tick() fait avancer le joueur le long du chemin (requestAnimationFrame),
+     s'arrête un instant sur chaque niveau et lui ajoute .is-reached
+     (pop CSS + gerbe de carrés .is-bursting).
+   - Grand écran : départ quand la carte est visible à 35 %
+     (IntersectionObserver). Écran étroit : le joueur suit une « ligne
+     de lecture » à 70 % de la hauteur de l'écran pendant le scroll.
+   - Réduire animations / prefers-reduced-motion : finish() débloque
+     tout immédiatement.
+   - Clic sur un niveau : ouvre/ferme sa fiche (aria-expanded) ;
+     « Voir le projet » appelle ProjectModal.open(). Échap ferme la
+     fiche et rend le focus au niveau (sauf si la fenêtre projet est
+     ouverte : elle gère son propre Échap).
+
+   EFFET DOMINO :
+   → Changer data-state d'un niveau dans index.html (done | progress |
+     locked) = son état change, rien d'autre à modifier.
+   → Ajouter/retirer un niveau = la carte se recalcule seule.
+   → Modifier SPEED / PAUSE = parcours plus rapide ou plus lent.
+   → Retirer .is-map (ou le JS) = la carte redevient une liste simple,
+     toujours lisible.
+   ═══════════════════════════════════════════════════════════════ */
+const SkillMap = (() => {
+  const WIDE_MIN = 1000;
+  const SPEED = { wide: 620, tall: 900 };      // px de chemin par seconde (~5 s pour tout le parcours)
+  const PAUSE = { reach: 110, locked: 300 };   // arrêt sur un niveau (ms)
+  let map, svg, worlds, levels, goal, replayBtn, pathEl, revealEl, playerEl;
+  let stops = [], samples = [], total = 0;
+  let mode = 'wide', len = 0, target = 0, reached = 0, pauseUntil = 0, raf = 0, last = 0, visible = false;
+
+  const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    document.body.classList.contains('reduce-motion');
+  const f = (v) => v.toFixed(1);
+
+  // Aléatoire à graine fixe : les îles gardent la même forme à chaque visite
+  function rng(seed) { return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+
+  // Segments de Bézier d'une courbe lisse (Catmull-Rom) passant par les points
+  function curve(p, closed) {
+    const n = p.length, segs = [];
+    const at = (i) => closed ? p[(i + n) % n] : p[Math.max(0, Math.min(n - 1, i))];
+    for (let i = 0; i < (closed ? n : n - 1); i++) {
+      const a = at(i - 1), b = at(i), c = at(i + 1), e = at(i + 2);
+      segs.push([b, 'C' + f(b[0] + (c[0] - a[0]) / 6) + ',' + f(b[1] + (c[1] - a[1]) / 6) + ' ' +
+        f(c[0] - (e[0] - b[0]) / 6) + ',' + f(c[1] - (e[1] - b[1]) / 6) + ' ' + f(c[0]) + ',' + f(c[1])]);
+    }
+    return segs;
+  }
+  const pathD = (segs, closed) => 'M' + f(segs[0][0][0]) + ',' + f(segs[0][0][1]) + ' ' + segs.map((s) => s[1]).join(' ') + (closed ? ' Z' : '');
+
+  // Île : forme « super-ellipse » bosselée autour d'un rectangle
+  function island(box, seed) {
+    const r = rng(seed), cx = (box[0] + box[2]) / 2, cy = (box[1] + box[3]) / 2;
+    const rx = (box[2] - box[0]) / 2, ry = (box[3] - box[1]) / 2, pts = [];
+    for (let k = 0; k < 9; k++) {
+      const a = (k / 9) * Math.PI * 2 + (r() - 0.5) * 0.5, j = 1 + (r() - 0.5) * 0.3;
+      const c = Math.cos(a), s = Math.sin(a);
+      pts.push([cx + Math.sign(c) * Math.pow(Math.abs(c), 0.8) * rx * j, cy + Math.sign(s) * Math.pow(Math.abs(s), 0.8) * ry * j]);
+    }
+    return { pts, cx, cy, rx, ry, r };
+  }
+
+  const isLocked = (i) => levels[i - 1] && levels[i - 1].dataset.state === 'locked';
+  const place = (el, x, y) => { el.style.setProperty('--x', f(x) + 'px'); el.style.setProperty('--y', f(y) + 'px'); };
+
+  function layout() {
+    const W = map.clientWidth;
+    if (!W) return;
+    mode = W >= WIDE_MIN ? 'wide' : 'tall';
+    const groups = worlds.map((w) => [...w.querySelectorAll('.skill-map__level')]);
+    const nodes = [], firsts = [];
+    let H, start, goalPt;
+    const mid = 195; // ligne médiane du parcours horizontal
+
+    if (mode === 'wide') {
+      // Niveaux en alternance haut/bas ; le niveau final a sa propre zone à droite
+      H = 370;
+      const amp = 120, left = 34, goalZone = 270, gap = 1.2;
+      const lanes = [0.55, -0.55, 0.45, -0.5, 0.6, -0.45];
+      const u = (W - left - goalZone - 40) / (levels.length + (groups.length - 1) * gap);
+      let x = left, k = 0;
+      start = [left, mid];
+      groups.forEach((g, gi) => {
+        if (gi > 0) x += gap * u;
+        g.forEach(() => { x += u; nodes.push([x, mid + amp * lanes[k % lanes.length]]); k++; });
+      });
+      // Château à la hauteur du dernier niveau : le chemin arrive à plat, le texte reste dessous
+      goalPt = [W - goalZone / 2, nodes[nodes.length - 1][1]];
+      H = Math.max(370, goalPt[1] + 150);
+    } else {
+      // Zigzag vertical ; d'un monde à l'autre le chemin descend tout droit sur la
+      // même voie, et le titre du monde se place de l'autre côté, au-dessus de l'île
+      const step = 96, gap = 112, lanes = [0.28, 0.72];
+      let y = 118, lane = 1;
+      start = [W * lanes[lane], 22];
+      groups.forEach((g, gi) => {
+        if (gi > 0) y += step + gap;
+        g.forEach((_, i) => {
+          if (i > 0) { y += step; lane = 1 - lane; }
+          nodes.push([W * lanes[lane], y]);
+        });
+      });
+      goalPt = [W * 0.5, y + 170];
+      H = goalPt[1] + 150;
+    }
+    map.style.setProperty('--map-h', H + 'px');
+    map.classList.toggle('is-wide', mode === 'wide');
+
+    // Niveaux + carte d'info (décalée pour ne pas sortir de la carte)
+    levels.forEach((li, i) => {
+      const [x, y] = nodes[i];
+      place(li, x, y);
+      li.style.setProperty('--card-shift', f(Math.max(0, 125 - x) + Math.min(0, W - 125 - x)) + 'px');
+      // Grand écran : nom et fiche vers l'extérieur du chemin (haut → au-dessus / fiche dessous)
+      li.classList.toggle('is-label-above', mode === 'wide' && y < mid);
+      li.classList.toggle('is-card-below', mode === 'wide' ? y < mid : y < 175);
+    });
+
+    // Îles + titres des mondes
+    let art = '', n = 0;
+    groups.forEach((g, gi) => {
+      const pts = nodes.slice(n, n + g.length); n += g.length;
+      const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+      let box;
+      if (mode === 'wide') {
+        const cx = (Math.min(...xs) + Math.max(...xs)) / 2, half = Math.max(90, (Math.max(...xs) - Math.min(...xs)) / 2 + 46);
+        box = [cx - half, Math.min(...ys) - 58, cx + half, Math.max(...ys) + 62];
+        place(worlds[gi].querySelector('.skill-map__world-title'), box[0] + 8, box[1] - 34);
+      } else {
+        box = [W * 0.05, Math.min(...ys) - 52, W * 0.95, Math.max(...ys) + 72];
+        const title = worlds[gi].querySelector('.skill-map__world-title');
+        const pathOnLeft = pts[0][0] < W / 2;
+        title.classList.toggle('is-title-right', pathOnLeft);
+        title.style.setProperty('--title-max', f(W * 0.72 - 30) + 'px');
+        place(title, pathOnLeft ? W - 4 : 4, box[1] - 6);
+      }
+      const isl = island(box, 11 + gi * 17), c = (gi % 4) + 1;
+      art += '<path class="skill-map__island skill-map__island--' + c + '" d="' + pathD(curve(isl.pts, true), true) + '"/>';
+      const coast = isl.pts.map(([x, y]) => [isl.cx + (x - isl.cx) * 1.06 + 4, isl.cy + (y - isl.cy) * 1.08 + 3]);
+      art += '<path class="skill-map__coast skill-map__coast--' + c + '" d="' + pathD(curve(coast, true), true) + '"/>';
+      for (let k = 0; k < 5; k++) {
+        const a = isl.r() * Math.PI * 2;
+        art += '<circle class="skill-map__dot" r="' + f(1.6 + isl.r() * 1.6) + '" cx="' + f(isl.cx + Math.cos(a) * isl.rx * 0.86) + '" cy="' + f(isl.cy + Math.sin(a) * isl.ry * 0.86) + '"/>';
+      }
+    });
+
+    // Chemin départ → niveaux → château
+    const all = [start, ...nodes, goalPt], segs = curve(all, false), d = pathD(segs, false);
+    const [gx, gy] = goalPt;
+    art += '<ellipse class="skill-map__island skill-map__island--1" cx="' + f(gx) + '" cy="' + f(gy + 4) + '" rx="64" ry="16"/>' +
+      '<defs><mask id="skill-map-reveal"><path class="skill-map__reveal" d="' + d + '"/></mask></defs>' +
+      '<path class="skill-map__trail" d="' + d + '"/><path class="skill-map__progress" d="' + d + '" mask="url(#skill-map-reveal)"/>' +
+      '<circle class="skill-map__start" r="6" cx="' + f(start[0]) + '" cy="' + f(start[1]) + '"/>' +
+      '<g transform="translate(' + f(gx) + ' ' + f(gy) + ')">' +
+        '<line class="skill-map__pole" x1="0" y1="-58" x2="0" y2="-96"/>' +
+        '<path class="skill-map__flag" d="M1,-96 L27,-88 L1,-80 Z"/>' +
+        '<path class="skill-map__castle" d="M-28,0 V-38 H-21 V-45 H-14 V-38 H-7 V-45 H7 V-38 H14 V-45 H21 V-38 H28 V0 Z"/>' +
+        '<path class="skill-map__castle" d="M-11,-38 V-54 H-11 V-60 H-5 V-54 H5 V-60 H11 V-54 H11 V-38 Z"/>' +
+        '<path class="skill-map__castle-door" d="M-7,0 V-11 A7,7 0 0 1 7,-11 V0 Z"/>' +
+      '</g>' +
+      '<g class="skill-map__player"><circle class="skill-map__player-glow" r="17"/><rect class="skill-map__player-body" x="-8" y="-8" width="16" height="16" rx="3.5"/></g>';
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.innerHTML = art;
+    pathEl = svg.querySelector('.skill-map__trail');
+    revealEl = svg.querySelector('.skill-map__reveal');
+    playerEl = svg.querySelector('.skill-map__player');
+
+    // Longueur du chemin à chaque niveau (segment par segment)
+    const probe = svg.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
+    stops = [0];
+    segs.forEach((s) => { probe.setAttribute('d', 'M' + f(s[0][0]) + ',' + f(s[0][1]) + ' ' + s[1]); stops.push(stops[stops.length - 1] + probe.getTotalLength()); });
+    probe.remove();
+    total = stops[stops.length - 1];
+    revealEl.style.strokeDasharray = total + ' ' + total;
+    samples = [];
+    for (let l = 0; l <= total; l += total / 300) { const p = pathEl.getPointAtLength(l); samples.push([l, p.y]); }
+
+    // Niveau final : château, puis « Niveau suivant » et l'invitation en dessous
+    const gTitle = goal.querySelector('.skill-map__world-title'), gBox = goal.querySelector('.skill-map__goal');
+    const clampX = (el) => { const h = el.offsetWidth / 2 + 4; return Math.min(Math.max(gx, h), W - h); };
+    place(gTitle, clampX(gTitle), gy + 26);
+    place(gBox, clampX(gBox), gy + 52);
+
+    // Reprend là où en était le joueur
+    len = Math.min(stops[reached] || 0, total);
+    if (map.classList.contains('is-complete')) len = total;
+    target = len;
+    draw();
+    updateTarget();
+    run();
+  }
+
+  function draw() {
+    if (!pathEl) return;
+    revealEl.style.strokeDashoffset = f(total - len);
+    const p = pathEl.getPointAtLength(len);
+    const a = stops[reached] || 0, b = stops[Math.min(reached + 1, stops.length - 1)];
+    const t = b > a ? Math.min(1, Math.max(0, (len - a) / (b - a))) : 0;
+    const hop = Math.sin(Math.PI * t) * (mode === 'wide' ? 16 : 12);
+    const turn = 90 * (reached + (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2));
+    playerEl.setAttribute('transform', 'translate(' + f(p.x) + ' ' + f(p.y - hop) + ') rotate(' + f(turn) + ')');
+  }
+
+  function reach(i) {
+    reached = i;
+    if (i === stops.length - 1) {
+      map.classList.add('is-complete');
+      if (replayBtn && !reduced()) replayBtn.hidden = false;
+      return;
+    }
+    const li = levels[i - 1];
+    if (!li) return;
+    li.classList.add('is-reached');
+    if (li.dataset.state !== 'locked') {
+      li.classList.remove('is-bursting');
+      void li.offsetWidth; // relance l'animation CSS
+      li.classList.add('is-bursting');
+      setTimeout(() => li.classList.remove('is-bursting'), 900);
+    }
+  }
+
+  function finish() {
+    levels.forEach((li) => li.classList.add('is-reached'));
+    map.classList.add('is-complete');
+    reached = stops.length - 1;
+    len = target = total;
+    draw();
+  }
+
+  function tick(now) {
+    raf = 0;
+    const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
+    last = now;
+    if (reduced()) { finish(); return; }
+    if (now < pauseUntil) { raf = requestAnimationFrame(tick); return; }
+    if (len >= target) { last = 0; return; }
+    const next = Math.min(target, len + SPEED[mode] * dt), ni = reached + 1;
+    if (ni < stops.length && next >= stops[ni]) {
+      len = stops[ni];
+      reach(ni);
+      pauseUntil = now + (isLocked(ni) ? PAUSE.locked : PAUSE.reach);
+    } else {
+      len = next;
+    }
+    draw();
+    raf = requestAnimationFrame(tick);
+  }
+  const run = () => { if (!raf) { last = 0; raf = requestAnimationFrame(tick); } };
+
+  // Jusqu'où le joueur a le droit d'aller
+  function updateTarget() {
+    if (mode === 'wide') { if (visible) target = total; return; }
+    const line = window.innerHeight * 0.7 - map.getBoundingClientRect().top;
+    let t = 0;
+    samples.forEach(([l, y]) => { if (y <= line && l > t) t = l; });
+    target = Math.max(target, t);
+  }
+
+  function replay() {
+    levels.forEach((li) => li.classList.remove('is-reached', 'is-bursting'));
+    map.classList.remove('is-complete');
+    len = target = 0; reached = 0; pauseUntil = 0;
+    draw();
+    updateTarget();
+    run();
+  }
+
+  function closeCards(except) {
+    levels.forEach((li) => {
+      if (li !== except && li.classList.contains('is-open')) {
+        li.classList.remove('is-open');
+        li.querySelector('.skill-map__node').setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+  function toggleCard(li) {
+    const open = !li.classList.contains('is-open');
+    closeCards(li);
+    li.classList.toggle('is-open', open);
+    li.querySelector('.skill-map__node').setAttribute('aria-expanded', String(open));
+  }
+
+  function init() {
+    map = document.getElementById('skill-map');
+    if (!map) return;
+    worlds = [...map.querySelectorAll('.skill-map__world:not(.skill-map__world--goal)')];
+    levels = [...map.querySelectorAll('.skill-map__level')];
+    goal = map.querySelector('.skill-map__world--goal');
+    replayBtn = document.getElementById('skill-map-replay');
+
+    levels.forEach((li) => {
+      for (let k = 0; k < 6; k++) {
+        const b = document.createElement('span'), a = (k / 6) * Math.PI * 2 + 0.4, dist = 30 + (k % 2) * 16;
+        b.className = 'skill-map__burst';
+        b.setAttribute('aria-hidden', 'true');
+        b.style.setProperty('--dx', f(Math.cos(a) * dist) + 'px');
+        b.style.setProperty('--dy', f(Math.sin(a) * dist) + 'px');
+        li.appendChild(b);
+      }
+      li.querySelector('.skill-map__node').addEventListener('click', () => toggleCard(li));
+      const openBtn = li.querySelector('.skill-map__open');
+      if (openBtn) openBtn.addEventListener('click', () => ProjectModal.open(openBtn));
+    });
+
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'skill-map__art');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    map.insertBefore(svg, map.firstChild);
+    map.classList.add('is-map');
+    layout();
+    if (reduced()) finish();
+
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting && e.intersectionRatio >= 0.35;
+      if (visible) { updateTarget(); run(); }
+    }, { threshold: [0, 0.35] }).observe(map);
+    window.addEventListener('scroll', () => { if (mode === 'tall') { updateTarget(); run(); } }, { passive: true });
+    let resizeTimer;
+    window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(layout, 150); });
+    window.addEventListener('load', layout);
+    document.addEventListener('portfolio:langchange', layout);
+    if (replayBtn) replayBtn.addEventListener('click', replay);
+
+    document.addEventListener('keydown', (e) => {
+      // La fenêtre projet gère son propre Échap (et rend le focus au bouton « Voir le projet »)
+      if (e.key !== 'Escape' || document.querySelector('.project-modal-overlay.is-open')) return;
+      const open = levels.find((li) => li.classList.contains('is-open'));
+      if (open) { closeCards(); open.querySelector('.skill-map__node').focus(); }
+    });
+    document.addEventListener('click', (e) => { if (!e.target.closest('.skill-map__level')) closeCards(); });
+  }
+  return { init };
+})();
+
+SkillMap.init();

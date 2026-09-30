@@ -605,72 +605,231 @@
 
     <!--
       ═══════════════════════════════════════════════════════════
-      SECTION COMPÉTENCES — Barres de progression animées
-      ──────────────────────────────────────────────────────
-      Rôle : Grille de catégories avec barres de compétences animées
-      à l'entrée dans le viewport (IntersectionObserver).
-
-      ANATOMIE D'UNE BARRE :
-      - role="progressbar" sur .skill-item__bar : sémantique ARIA correcte
-        pour une barre de progression (pas un input range).
-      - aria-valuenow / aria-valuemin / aria-valuemax : les valeurs numériques
-        lisibles par les lecteurs d'écran ("40 sur 100" pour Illustrator).
-      - .skill-item__fill[data-width="40"] : le JS lit data-width et applique
-        width: 40% avec une transition CSS après que l'élément entre en vue.
-        Sans l'IntersectionObserver, la barre resterait à width: 0 pour toujours.
-
-      SkillBars JS : observe chaque .skill-item__bar. À l'entrée viewport →
-      applique la largeur → observer.unobserve() pour ne déclencher qu'une fois.
-
-      Effet domino : Supprimer data-width → les barres restent à 0%.
-      Supprimer role="progressbar" → perte de sémantique ARIA.
+      SECTION COMPÉTENCES — Carte de parcours (motion design)
+      ─────────────────────────────────────────────────────────
+      Rôle : les compétences présentées comme une carte de jeu : 4 « mondes »
+      (îles), un chemin, des niveaux qui se débloquent au passage du carré
+      orange (le point du logo « C. »), et un niveau final verrouillé qui
+      mène au contact. Chaque niveau renvoie à un projet réel (preuve).
+      Structure : une vraie liste ordonnée (mondes > niveaux) lisible sans
+      JS et par les lecteurs d'écran ; le module SkillMap (main.js) ajoute
+      .is-map, dessine l'SVG (îles, chemin, château) et positionne les
+      niveaux. data-state : done (maîtrisé) | progress (en progression) |
+      locked (à débloquer) — c'est la seule chose à changer pour faire
+      évoluer un niveau.
+      Effet domino : Retirer l'id skill-map → la carte reste en liste simple.
+      Ajouter/retirer un <li class="skill-map__level"> → la carte se
+      recalcule seule. Changer data-project-* → change la fenêtre projet.
       ═══════════════════════════════════════════════════════════
     -->
     <!-- ═══════════════════════════════════ SKILLS ═══════════════════════════════════ -->
     <section class="skills section" aria-labelledby="skills-title">
       <div class="container">
-        <p class="section__label reveal">Savoir-faire</p>
-        <h2 class="section__title reveal" id="skills-title">Mes compétences</h2>
-        <div class="skills__grid">
+        <p class="section__label reveal" data-i18n="skills.label">Savoir-faire</p>
+        <h2 class="section__title reveal" id="skills-title" data-i18n="skills.mapTitle">Mon parcours de compétences</h2>
+        <p class="skill-map__intro reveal" data-i18n="skills.mapIntro">Chaque niveau débloqué correspond à un projet réalisé. Sélectionnez un niveau pour voir la preuve.</p>
 
-          <div class="skill-category reveal stagger-1">
-            <div class="skill-category__icon" aria-hidden="true">🎨</div>
-            <h3 class="skill-category__title">Design Graphique</h3>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Adobe Photoshop</span><span class="skill-item__level" aria-hidden="true">Bases</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="40"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Canva</span><span class="skill-item__level" aria-hidden="true">Avancé</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="80"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Typographie &amp; Composition</span><span class="skill-item__level" aria-hidden="true">Intermédiaire</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="70"></div></div></div>
-          </div>
-
-          <div class="skill-category reveal stagger-2">
-            <div class="skill-category__icon" aria-hidden="true">📐</div>
-            <h3 class="skill-category__title">UX / UI Design</h3>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">UX Research &amp; Personas</span><span class="skill-item__level" aria-hidden="true">Intermédiaire</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="65"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Accessibilité RGAA / WCAG</span><span class="skill-item__level" aria-hidden="true">Intermédiaire</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="65"></div></div></div>
-          </div>
-
-          <div class="skill-category reveal stagger-3">
-            <div class="skill-category__icon" aria-hidden="true">💻</div>
-            <h3 class="skill-category__title">Développement Web</h3>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">HTML / CSS</span><span class="skill-item__level" aria-hidden="true">Avancé</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="85"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">JavaScript</span><span class="skill-item__level" aria-hidden="true">Intermédiaire</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="60"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">PHP / MySQL</span><span class="skill-item__level" aria-hidden="true">Bases</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="30"></div></div></div>
-          </div>
-
-          <div class="skill-category reveal stagger-1">
-            <div class="skill-category__icon" aria-hidden="true">🎬</div>
-            <h3 class="skill-category__title">Audiovisuel</h3>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">CapCut</span><span class="skill-item__level" aria-hidden="true">Bases</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="30"></div></div></div>
-          </div>
-
-          <div class="skill-category reveal stagger-2">
-            <div class="skill-category__icon" aria-hidden="true">🧠</div>
-            <h3 class="skill-category__title">Compétences transversales</h3>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Direction artistique</span><span class="skill-item__level" aria-hidden="true">Intermédiaire</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="65"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Gestion de projet</span><span class="skill-item__level" aria-hidden="true">Intermédiaire</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="60"></div></div></div>
-            <div class="skill-item"><div class="skill-item__header"><span class="skill-item__name">Communication</span><span class="skill-item__level" aria-hidden="true">Avancé</span></div><div class="skill-item__bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><div class="skill-item__fill" data-width="80"></div></div></div>
-          </div>
-
+        <div class="skill-map" id="skill-map">
+          <ol class="skill-map__worlds">
+            <li class="skill-map__world" data-world="1">
+              <h3 class="skill-map__world-title"><span class="skill-map__world-num" aria-hidden="true">01</span> <span data-i18n="skills.w1">Design graphique</span></h3>
+              <ol class="skill-map__levels">
+                <li class="skill-map__level" data-state="done">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-canva">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">Canva</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.done">Maîtrisé</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-canva">
+                    <img class="skill-map__thumb" src="assets/img/projet-5.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.done">Maîtrisé</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.canva">Couverture magazine « Icone »</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-5.webp" data-project-title="Couverture Magazine ICONE" data-project-tags="Cover,Canva,Production graphique" data-project-desc="Prolongement de ma passion pour les couvertures de magazine avec un nouveau design et une nouvelle organisation visuelle. Travail sur la mise en page, le choix typographique et la composition photographique pour un rendu éditorial professionnel. Réalisé sur Canva."><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="done">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-typo">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name"><span data-i18n="skills.n.typo">Typographie</span></span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.done">Maîtrisé</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-typo">
+                    <img class="skill-map__thumb" src="assets/img/projet-2.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.done">Maîtrisé</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.typo">Affiche de concert Tame Impala, style Swiss</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-2.webp" data-project-title="Affiche de Concert : Style Swissed" data-project-tags="Affiche,Canva,Production graphique" data-project-desc="Expérimentation créative de design pour un concert fictif de l'artiste Tame Impala. Travail sur la composition typographique dans un style swiss/international, avec une attention portée à la hiérarchie visuelle, la grille et le contraste. Réalisé sur Canva."><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="progress">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-photoshop">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">Photoshop</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.progress">En progression</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-photoshop">
+                    <img class="skill-map__thumb" src="assets/img/projet-7.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.progress">En progression</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.photoshop">Affiche d'exposition James Gill, Pop Art Legacy</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-7.webp" data-project-title="Affiche d'Exposition : James Gill, Pop Art Legacy" data-project-tags="Affiche,Photoshop,Production graphique" data-project-desc="Conception d'une affiche pour une exposition fictive de James Francis Gill au [mac] Musée d'Art Contemporain de Marseille. Le design repose sur un triptyque chromatique (violet, bleu et jaune-rouge) avec superposition de portraits de l'artiste et éléments graphiques constructivistes. Un travail de direction artistique alliant typographie bold, composition symétrique et traitement colorimétrique Pop Art. Réalisé sur Adobe Photoshop."><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="progress">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-figma">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">Figma</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.progress">En progression</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-figma">
+                    <p class="skill-map__state" data-i18n="skills.state.progress">En progression</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.figma">Maquettes et prototypes d'interfaces</p>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="locked">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-illustrator">
+                    <span class="skill-map__square" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+                    <span class="skill-map__name">Illustrator</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.locked">À débloquer</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-illustrator">
+                    <p class="skill-map__state" data-i18n="skills.state.locked">À débloquer</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.next">Prochain niveau : à débloquer en alternance</p>
+                  </div>
+                </li>
+              </ol>
+            </li>
+            <li class="skill-map__world" data-world="2">
+              <h3 class="skill-map__world-title"><span class="skill-map__world-num" aria-hidden="true">02</span> <span data-i18n="skills.w2">Développement web</span></h3>
+              <ol class="skill-map__levels">
+                <li class="skill-map__level" data-state="done">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-html">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">HTML / CSS</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.done">Maîtrisé</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-html">
+                    <img class="skill-map__thumb" src="assets/img/projet-web-mareis.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.done">Maîtrisé</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.html">Site Marëis, protection marine</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-web-mareis.webp" data-project-title="Site Web MARËIS : Protection Marine" data-project-tags="HTML/CSS,JavaScript,Développement web" data-project-desc="Projet SAE 1.05 : conception et développement d'un site web complet pour MARËIS, association fictive dédiée à la protection de la faune et flore marine en Guadeloupe. Site multi-pages responsive avec mode sombre, navigation fluide, sections dynamiques et formulaire de contact. Développé en HTML, CSS et JavaScript." data-project-url="https://sallyanicet-gif.github.io/sae-1.05/"><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="done">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-js">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">JavaScript</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.done">Maîtrisé</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-js">
+                    <img class="skill-map__thumb" src="assets/img/projet-web-airpods.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.done">Maîtrisé</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.js">Landing page AirPods Pro 3, animations GSAP</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-web-airpods.webp" data-project-title="Landing Page AirPods Pro 3" data-project-tags="HTML/CSS,JavaScript,GSAP,Design" data-project-desc="Landing page premium inspirée du design Apple pour les AirPods Pro 3. Site one-page avec animations GSAP/ScrollTrigger, sections plein-écran avec images en fond, bento grid pour les fonctionnalités, switch de langue FR/EN, loader animé, curseur personnalisé et design entièrement responsive." data-project-url="https://yui971.github.io/AirPods-Pro-3/"><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="progress">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-wordpress">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">WordPress</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.progress">En progression</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-wordpress">
+                    <img class="skill-map__thumb" src="assets/img/projet-web-sillies.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.progress">En progression</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.wp">Boutique The Sillies (WooCommerce)</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-web-sillies.webp" data-project-title="The Sillies : Boutique WordPress" data-project-tags="WordPress,WooCommerce,PHP,Développement web" data-project-desc="SAÉ 2.02 : création d'une boutique e-commerce complète pour The Sillies, marque fictive de peluches aliens reflétant l'humeur du jour. Thème WordPress custom développé from scratch, intégration WooCommerce, site bilingue FR/EN via Polylang, design system cohérent (vert citron, typography fun), pages Boutique, À propos et Contact, compatibilité mobile." data-project-url="https://sillies-boutique.infinityfree.me/"><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="progress">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-astro">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name">Astro</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.progress">En progression</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-astro">
+                    <img class="skill-map__thumb" src="assets/img/projet-web-paris.webp" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.progress">En progression</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.astro">Guide « Mon voyage à Paris »</p>
+                    <button type="button" class="skill-map__open" data-project-img="assets/img/projet-web-paris.webp" data-project-title="Mon Voyage à Paris : Guide Touristique" data-project-tags="Astro,i18n,Développement web" data-project-desc="Guide de voyage interactif consacré à Paris, développé avec Astro. Treize lieux emblématiques présentés avec recherche et filtre par arrondissement, section dédiée à l'ambiance parisienne et page pratique pour se déplacer dans la ville. Site entièrement bilingue français et anglais grâce au système i18n natif d'Astro, avec bannière cookies respectueuse de la vie privée et mentions légales. Identité visuelle propre, logo animé et micro-interactions soignées sur l'ensemble des pages." data-project-url="https://yui971.github.io/mon-voyage-a-paris/"><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+              </ol>
+            </li>
+            <li class="skill-map__world" data-world="3">
+              <h3 class="skill-map__world-title"><span class="skill-map__world-num" aria-hidden="true">03</span> <span data-i18n="skills.w3">Vidéo</span></h3>
+              <ol class="skill-map__levels">
+                <li class="skill-map__level" data-state="progress">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-video">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name"><span data-i18n="skills.n.video">Montage vidéo</span></span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.progress">En progression</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-video">
+                    <img class="skill-map__thumb" src="https://img.youtube.com/vi/Y85a9M9mVBk/hqdefault.jpg" alt="" width="56" height="56" loading="lazy">
+                    <p class="skill-map__state" data-i18n="skills.state.progress">En progression</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.video">Production audiovisuelle sur CapCut</p>
+                    <button type="button" class="skill-map__open" data-project-img="https://img.youtube.com/vi/Y85a9M9mVBk/hqdefault.jpg" data-project-title="Production Audiovisuelle : Projet Vidéo" data-project-tags="Montage,CapCut,Production audio &amp; vidéo" data-project-desc="Réalisation d'une production audiovisuelle dans le cadre de mes études en BUT MMI. Travail sur le cadrage, le montage, la narration visuelle et l'habillage sonore. Ce projet illustre mes compétences en captation et post-production vidéo." data-project-video="Y85a9M9mVBk"><span data-i18n="skills.open">Voir le projet</span></button>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="locked">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-aftereffects">
+                    <span class="skill-map__square" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+                    <span class="skill-map__name">After Effects</span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.locked">À débloquer</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-aftereffects">
+                    <p class="skill-map__state" data-i18n="skills.state.locked">À débloquer</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.next">Prochain niveau : à débloquer en alternance</p>
+                  </div>
+                </li>
+              </ol>
+            </li>
+            <li class="skill-map__world" data-world="4">
+              <h3 class="skill-map__world-title"><span class="skill-map__world-num" aria-hidden="true">04</span> <span data-i18n="skills.w4">UX et accessibilité</span></h3>
+              <ol class="skill-map__levels">
+                <li class="skill-map__level" data-state="done">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-ux">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name"><span data-i18n="skills.n.ux">Recherche UX</span></span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.done">Maîtrisé</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-ux">
+                    <p class="skill-map__state" data-i18n="skills.state.done">Maîtrisé</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.ux">Personas et parcours utilisateurs</p>
+                  </div>
+                </li>
+                <li class="skill-map__level" data-state="done">
+                  <button type="button" class="skill-map__node" aria-expanded="false" aria-controls="skill-card-a11y">
+                    <span class="skill-map__square" aria-hidden="true"></span>
+                    <span class="skill-map__name"><span data-i18n="skills.n.a11y">Accessibilité RGAA</span></span>
+                    <span class="skill-map__sr">, <span data-i18n="skills.state.done">Maîtrisé</span></span>
+                  </button>
+                  <div class="skill-map__card" id="skill-card-a11y">
+                    <p class="skill-map__state" data-i18n="skills.state.done">Maîtrisé</p>
+                    <p class="skill-map__proof" data-i18n="skills.p.a11y">Ce site : navigation clavier, contrastes, widget d'accessibilité</p>
+                  </div>
+                </li>
+              </ol>
+            </li>
+            <li class="skill-map__world skill-map__world--goal" data-world="goal">
+              <h3 class="skill-map__world-title" data-i18n="skills.goalTitle">Niveau suivant</h3>
+              <div class="skill-map__goal">
+                <p class="skill-map__goal-text" data-i18n="skills.goalText">Votre entreprise ?</p>
+                <a href="contact.html" class="btn btn--primary skill-map__goal-cta" data-i18n="skills.goalCta">Débloquer ce niveau</a>
+              </div>
+            </li>
+          </ol>
         </div>
+
+        <div class="skill-map__footer">
+          <span class="skill-map__sr" id="skill-legend-title" data-i18n="skills.legend">Légende</span>
+          <ul class="skill-map__legend" aria-labelledby="skill-legend-title">
+            <li data-state="done"><span class="skill-map__square" aria-hidden="true"></span><span data-i18n="skills.state.done">Maîtrisé</span></li>
+            <li data-state="progress"><span class="skill-map__square" aria-hidden="true"></span><span data-i18n="skills.state.progress">En progression</span></li>
+            <li data-state="locked"><span class="skill-map__square" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span data-i18n="skills.state.locked">À débloquer</span></li>
+          </ul>
+          <button type="button" class="skill-map__replay" id="skill-map-replay" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 3 3 9 9 9"/></svg><span data-i18n="skills.replay">Rejouer le parcours</span></button>
+        </div>
+
         <div style="text-align:center;margin-top:var(--space-3xl);" class="reveal">
           <a href="assets/cv/CV_BERDIER_CHRISNAEL.pdf" class="btn btn--primary" download aria-label="Télécharger mon CV au format PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Télécharger mon CV</a>
         </div>
