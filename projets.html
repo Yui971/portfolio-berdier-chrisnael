@@ -167,6 +167,9 @@
           - data-project-video="YOUTUBE_ID" (projets vidéo uniquement) :
             priorité maximale. ProjectModal crée une <iframe> YouTube
             plutôt qu'afficher l'image quand cet attribut est présent.
+            Si la valeur est un chemin vers un fichier .mp4 du site
+            (ex. assets/video/nike-mercurial-by-you.mp4), un lecteur <video>
+            natif remplace l'iframe (miniature de la carte en affiche).
           - data-project-url (projets web) : affiche le lien "Voir le site".
 
           L'élément #projects-empty ("Aucun projet ne correspond") est
@@ -318,6 +321,17 @@
               <div class="project-card__tags"><span class="tag">Production graphique</span><span class="tag tag--secondary">Photoshop</span></div>
               <h3 class="project-card__title">Affiche d'Exposition : James Gill</h3>
               <p class="project-card__desc">Affiche d'exposition fictive, triptyque Pop Art au [mac] Marseille.</p>
+              <button class="project-card__link" type="button">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+          </article>
+
+          <!-- PRODUCTION AUDIO & VIDÉO : pub Nike Mercurial (MP4 hébergé sur le site, réalisé avec Remotion) -->
+          <article class="project-card reveal stagger-1" data-category="video" data-ue="ue13" tabindex="0" data-project-img="assets/img/projet-nike-mercurial.webp" data-project-title="Pub Nike Mercurial By You : Motion Design" data-project-tags="Motion design,Remotion,Production audio &amp; vidéo" data-project-desc="Publicité conceptuelle (spec ad) de 32 secondes pour la Nike Mercurial Superfly 11 Elite By You, dans un coloris rose personnalisé. Motion design codé avec Remotion (React + TypeScript) : la chaussure vient des vraies photos du configurateur Nike By You, tandis que le stade de nuit, les projecteurs, la course au ras de la pelouse et le ballon dont la traînée dessine le swoosh sont générés en code. Sound design construit plan par plan : crampons, frappe de balle et foule de stade réels, couches synthétisées et rythmique composée sur le montage. Projet étudiant, sans lien avec Nike." data-project-video="assets/video/nike-mercurial-by-you.mp4">
+            <div class="project-card__image"><img src="assets/img/projet-nike-mercurial.webp" alt="Chaussure Nike Mercurial Superfly rose sous les projecteurs d'un stade, extrait de la pub" loading="lazy"></div>
+            <div class="project-card__body">
+              <div class="project-card__tags"><span class="tag tag--video">Audio &amp; Vidéo</span><span class="tag tag--secondary">Remotion</span></div>
+              <h3 class="project-card__title">Pub Nike Mercurial By You : Motion Design</h3>
+              <p class="project-card__desc">Spec ad de 32 s : stade de nuit, sprint, frappe au ralenti et sound design plan par plan.</p>
               <button class="project-card__link" type="button">Voir le projet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
           </article>

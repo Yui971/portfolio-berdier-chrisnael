@@ -619,12 +619,26 @@ const ProjectModal = (() => {
       if (tags) tags.innerHTML = tgs.map(function(tg, i) { return '<span class="tag ' + (i > 0 ? 'tag--secondary' : '') + '">' + tg.trim() + '</span>'; }).join('');
 
       if (videoId) {
-        // YouTube embed
         img.style.display = 'none';
         controls.style.display = 'none';
         var vw = document.createElement('div');
         vw.className = 'project-modal__video-wrap';
-        vw.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        if (/\.(mp4|webm)$/i.test(videoId)) {
+          // Vidéo hébergée sur le site (assets/video/…) : lecteur natif avec le son,
+          // la miniature de la carte sert d'affiche pendant le chargement
+          var vid = document.createElement('video');
+          vid.src = videoId;
+          vid.controls = true;
+          vid.autoplay = true;
+          vid.playsInline = true;
+          vid.preload = 'auto';
+          if (imgSrc) vid.poster = imgSrc;
+          vid.setAttribute('aria-label', t);
+          vw.appendChild(vid);
+        } else {
+          // YouTube embed
+          vw.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        }
         container.insertBefore(vw, controls);
       } else if (siteUrl) {
         if (card.dataset.noIframe) {
