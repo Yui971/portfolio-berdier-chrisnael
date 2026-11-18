@@ -640,6 +640,25 @@ const ProjectModal = (() => {
           vw.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
         }
         container.insertBefore(vw, controls);
+      } else if (siteUrl && card.dataset.projectPreview) {
+        // Site qui refuse l'intégration en iframe (ex. Webflow) : capture pleine page
+        // qui défile dans une fausse fenêtre de navigateur + lien vers le vrai site
+        img.style.display = 'none';
+        controls.style.display = 'none';
+        var host = siteUrl;
+        try { host = new URL(siteUrl).host; } catch (e) {}
+        var pw = document.createElement('div');
+        pw.className = 'project-modal__site-wrap project-modal__site-wrap--preview';
+        pw.innerHTML =
+          '<div class="project-modal__browser-bar" aria-hidden="true"><span></span><span></span><span></span><em></em></div>' +
+          '<div class="project-modal__preview-scroll" tabindex="0"><img alt="" loading="lazy"></div>';
+        pw.querySelector('em').textContent = host;
+        var pImg = pw.querySelector('img');
+        pImg.src = card.dataset.projectPreview;
+        pImg.alt = 'Aperçu de la page d’accueil : ' + t;
+        pw.querySelector('.project-modal__preview-scroll').setAttribute('aria-label', 'Aperçu défilant du site ' + t);
+        container.insertBefore(pw, controls);
+        if (extLink) { extLink.href = siteUrl; extLink.style.display = 'inline-flex'; }
       } else if (siteUrl) {
         if (card.dataset.noIframe) {
           // Site bloque les iframes : afficher la capture statique + lien externe
